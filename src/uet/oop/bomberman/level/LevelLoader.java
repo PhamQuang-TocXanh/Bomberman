@@ -5,10 +5,10 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class LevelLoader {
-    public static int WIDTH = 20;
-    public static int HEIGHT = 15;
-    public static int LEVEL = 1;
-    public static char[][] map;
+    private int WIDTH = 20;
+    private int HEIGHT = 15;
+    private int LEVEL = 1;
+    private char[][] map;
 
     public void loadLevel(int level) {
         try {
@@ -38,12 +38,28 @@ public class LevelLoader {
         }
     }
 
+    public char[][] getMap() {
+        return map;
+    }
+
+    public int getWIDTH() {
+        return WIDTH;
+    }
+
+    public int getHEIGHT() {
+        return HEIGHT;
+    }
+
+    public int getLEVEL() {
+        return LEVEL;
+    }
+
     public static void main(String[] args) {
         LevelLoader l = new LevelLoader();
-        l.loadLevel(1);
-        for (int i = 0; i < LevelLoader.HEIGHT; i++) {
-            for(int j=0;j<WIDTH;j++){
-                System.out.print(map[i][j]);
+        l.loadLevel(2);
+        for (int i = 0; i < l.getHEIGHT(); i++) {
+            for(int j=0;j<l.getWIDTH();j++){
+                System.out.print(l.getMap()[i][j]);
             }
             System.out.println("");
         }
