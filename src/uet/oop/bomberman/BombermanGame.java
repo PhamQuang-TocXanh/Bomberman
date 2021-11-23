@@ -19,6 +19,7 @@ import uet.oop.bomberman.entities.Tiles.Brick;
 import uet.oop.bomberman.entities.Tiles.Portal;
 import uet.oop.bomberman.entities.Tiles.Wall;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.input.Keyboard;
 import uet.oop.bomberman.level.LevelLoader;
 
 import java.util.ArrayList;
@@ -36,7 +37,6 @@ public class BombermanGame extends Application {
 
     private LevelLoader levelLoader;
     private Bomber bomber;
-
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
     }
@@ -74,13 +74,15 @@ public class BombermanGame extends Application {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
-                bomber.move(keyEvent);
+                //bomber.move(keyEvent);
+                bomber.getKeyboard().keyPressed(keyEvent);
             }
         });
         scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
-                bomber.endMove(keyEvent);
+             //   bomber.endMove(keyEvent);
+                bomber.getKeyboard().keyReleased(keyEvent);
             }
         });
     }
