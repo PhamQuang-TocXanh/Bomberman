@@ -40,44 +40,44 @@ public class Enemy extends Character {
                 && !(e instanceof BombItem) && !(e instanceof FlameItem) && !(e instanceof SpeedItem);
     }
 
-    @Override
-    public Entity collision(int xa, int ya) {
-        List<Entity> l = BombermanGame.mapList;
-        int autoY = autoCorrectPosition(ya);
-        int autoX = autoCorrectPosition(xa);
-        Entity e = null;
-
-        if (direction == 0) {
-            int yy = (ya) / Sprite.SCALED_SIZE * Sprite.SCALED_SIZE;
-            for (Entity entity : l) {
-                if (entity.getY() == yy && entity.getX() == autoX) {
-                    e = entity; break;
-                }
-            }
-        } else if (direction == 1){
-            int xx = (x + Sprite.SCALED_SIZE) / Sprite.SCALED_SIZE * Sprite.SCALED_SIZE;
-            for (Entity entity : l) {
-                if (entity.getX() == xx && entity.getY() == autoY) {
-                    e = entity; break;
-                }
-            }
-        } else if (direction == 2) {
-            int yy = (y + Sprite.SCALED_SIZE) / Sprite.SCALED_SIZE * Sprite.SCALED_SIZE;
-            for (Entity entity : l) {
-                if (entity.getY() == yy && entity.getX() == autoX) {
-                    e = entity; break;
-                }
-            }
-        } else if (direction == 3) {
-            int xx = (xa) / Sprite.SCALED_SIZE * Sprite.SCALED_SIZE;
-            for (Entity entity : l) {
-                if (entity.getX() == xx && entity.getY() == autoY) {
-                    e = entity; break;
-                }
-            }
-        }
-        return e;
-    }
+//    @Override
+//    public Entity collision(int xa, int ya) {
+//        List<Entity> l = BombermanGame.stillObjects;
+//        int autoY = autoCorrectPosition(ya);
+//        int autoX = autoCorrectPosition(xa);
+//        Entity e = null;
+//
+//        if (direction == 0) {
+//            int yy = (ya) / Sprite.SCALED_SIZE * Sprite.SCALED_SIZE;
+//            for (Entity entity : l) {
+//                if (entity.getY() == yy && entity.getX() == autoX) {
+//                    e = entity;
+//                }
+//            }
+//        } else if (direction == 1){
+//            int xx = (x + Sprite.SCALED_SIZE) / Sprite.SCALED_SIZE * Sprite.SCALED_SIZE;
+//            for (Entity entity : l) {
+//                if (entity.getX() == xx && entity.getY() == autoY) {
+//                    e = entity;
+//                }
+//            }
+//        } else if (direction == 2) {
+//            int yy = (y + Sprite.SCALED_SIZE) / Sprite.SCALED_SIZE * Sprite.SCALED_SIZE;
+//            for (Entity entity : l) {
+//                if (entity.getY() == yy && entity.getX() == autoX) {
+//                    e = entity;
+//                }
+//            }
+//        } else if (direction == 3) {
+//            int xx = (xa) / Sprite.SCALED_SIZE * Sprite.SCALED_SIZE;
+//            for (Entity entity : l) {
+//                if (entity.getX() == xx && entity.getY() == autoY) {
+//                    e = entity;
+//                }
+//            }
+//        }
+//        return e;
+//    }
 
 
     @Override

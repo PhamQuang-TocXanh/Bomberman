@@ -34,8 +34,7 @@ public class BombermanGame extends Application {
     private GraphicsContext gc;
     private Canvas canvas;
     private List<Entity> entities = new ArrayList<>();
-    private List<Entity> stillObjects = new ArrayList<>();
-    public static List<Entity> mapList = new ArrayList<>();
+    public static List<Entity> stillObjects = new ArrayList<>();
 
     private LevelLoader levelLoader;
     private Bomber bomber;
@@ -140,7 +139,6 @@ public class BombermanGame extends Application {
                     object = new Grass(i, j, Sprite.grass.getFxImage());
                 }
                 stillObjects.add(object);
-                mapList.add(object);
             }
         }
     }

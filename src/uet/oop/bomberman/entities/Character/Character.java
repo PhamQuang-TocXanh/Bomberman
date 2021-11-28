@@ -60,7 +60,7 @@ public abstract class Character extends AnimatedEntity {
     }
 
     public Entity collision(int xa, int ya) {
-        List<Entity> l = BombermanGame.mapList;
+        List<Entity> l = BombermanGame.stillObjects;
         int autoY = autoCorrectPosition(ya);
         int autoX = autoCorrectPosition(xa);
         Entity e = null;
@@ -69,28 +69,28 @@ public abstract class Character extends AnimatedEntity {
             int yy = (ya) / Sprite.SCALED_SIZE * Sprite.SCALED_SIZE;
             for (Entity entity : l) {
                 if (entity.getY() == yy && entity.getX() == autoX) {
-                    e = entity; break;
+                    e = entity;
                 }
             }
         } else if (direction == 1){
             int xx = (x + Sprite.SCALED_SIZE) / Sprite.SCALED_SIZE * Sprite.SCALED_SIZE;
             for (Entity entity : l) {
                 if (entity.getX() == xx && entity.getY() == autoY) {
-                    e = entity; break;
+                    e = entity;
                 }
             }
         } else if (direction == 2) {
             int yy = (y + Sprite.SCALED_SIZE) / Sprite.SCALED_SIZE * Sprite.SCALED_SIZE;
             for (Entity entity : l) {
                 if (entity.getY() == yy && entity.getX() == autoX) {
-                    e = entity; break;
+                    e = entity;
                 }
             }
         } else if (direction == 3) {
             int xx = (xa) / Sprite.SCALED_SIZE * Sprite.SCALED_SIZE;
             for (Entity entity : l) {
                 if (entity.getX() == xx && entity.getY() == autoY) {
-                    e = entity; break;
+                    e = entity;
                 }
             }
         }
