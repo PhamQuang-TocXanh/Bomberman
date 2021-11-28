@@ -9,17 +9,18 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import uet.oop.bomberman.entities.Character.Balloon;
+import uet.oop.bomberman.entities.Character.Enemy.Balloon;
 import uet.oop.bomberman.entities.Character.Bomber;
-import uet.oop.bomberman.entities.Character.Doll;
-import uet.oop.bomberman.entities.Character.Oneal;
+import uet.oop.bomberman.entities.Character.Enemy.Doll;
+import uet.oop.bomberman.entities.Character.Enemy.Oneal;
 import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.Grass;
+import uet.oop.bomberman.entities.Items.BombItem;
+import uet.oop.bomberman.entities.Items.SpeedItem;
+import uet.oop.bomberman.entities.Tiles.Grass;
 import uet.oop.bomberman.entities.Tiles.Brick;
 import uet.oop.bomberman.entities.Tiles.Portal;
 import uet.oop.bomberman.entities.Tiles.Wall;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.input.Keyboard;
 import uet.oop.bomberman.level.LevelLoader;
 
 import java.util.ArrayList;
@@ -34,9 +35,11 @@ public class BombermanGame extends Application {
     private Canvas canvas;
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
+    public static List<Entity> mapList = new ArrayList<>();
 
     private LevelLoader levelLoader;
     private Bomber bomber;
+
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
     }
@@ -74,14 +77,12 @@ public class BombermanGame extends Application {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
-                //bomber.move(keyEvent);
                 bomber.getKeyboard().keyPressed(keyEvent);
             }
         });
         scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
-             //   bomber.endMove(keyEvent);
                 bomber.getKeyboard().keyReleased(keyEvent);
             }
         });
@@ -94,8 +95,8 @@ public class BombermanGame extends Application {
         assert false;
         map = levelLoader.getMap();
     }
-        for (int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < HEIGHT; j++) {
+        for (int j = 0; j < HEIGHT; j++) {
+            for (int i = 0; i < WIDTH; i++) {
                 Entity object;
                 if (map[j][i] == 'p') {
                     bomber = new Bomber(i, j, Sprite.player_right.getFxImage());
@@ -120,10 +121,26 @@ public class BombermanGame extends Application {
                     stillObjects.add(new Portal(i, j, Sprite.portal.getFxImage()));
                     object = new Brick(i, j, Sprite.brick.getFxImage());
                 }
+                else if (map[j][i] == 'b') {
+                    stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
+                    stillObjects.add(new BombItem(i, j, Sprite.powerup_bombs.getFxImage()));
+                    object = new Brick(i, j, Sprite.brick.getFxImage());
+                }
+                else if (map[j][i] == 'f') {
+                    stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
+                    stillObjects.add(new BombItem(i, j, Sprite.powerup_bombs.getFxImage()));
+                    object = new Brick(i, j, Sprite.brick.getFxImage());
+                }
+                else if (map[j][i] == 's') {
+                    stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
+                    stillObjects.add(new SpeedItem(i, j, Sprite.powerup_speed.getFxImage()));
+                    object = new Brick(i, j, Sprite.brick.getFxImage());
+                }
                 else {
                     object = new Grass(i, j, Sprite.grass.getFxImage());
                 }
                 stillObjects.add(object);
+                mapList.add(object);
             }
         }
     }
@@ -136,5 +153,29 @@ public class BombermanGame extends Application {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
+    }
+
+    public GraphicsContext getGc() {
+        return gc;
+    }
+
+    public Canvas getCanvas() {
+        return canvas;
+    }
+
+    public List<Entity> getEntities() {
+        return entities;
+    }
+
+    public List<Entity> getStillObjects() {
+        return stillObjects;
+    }
+
+    public LevelLoader getLevelLoader() {
+        return levelLoader;
+    }
+
+    public Bomber getBomber() {
+        return bomber;
     }
 }

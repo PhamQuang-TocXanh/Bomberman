@@ -33,6 +33,9 @@ public class LevelLoader {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             System.out.println("Not found file level " + level);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
