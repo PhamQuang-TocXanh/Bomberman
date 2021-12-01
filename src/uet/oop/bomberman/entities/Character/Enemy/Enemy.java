@@ -1,7 +1,6 @@
 package uet.oop.bomberman.entities.Character.Enemy;
 
 import javafx.scene.image.Image;
-import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Bomb;
 import uet.oop.bomberman.entities.Character.Character;
 import uet.oop.bomberman.entities.Entity;
@@ -10,11 +9,9 @@ import uet.oop.bomberman.entities.Items.FlameItem;
 import uet.oop.bomberman.entities.Items.SpeedItem;
 import uet.oop.bomberman.entities.Tiles.Brick;
 import uet.oop.bomberman.entities.Tiles.Wall;
-import uet.oop.bomberman.graphics.Sprite;
 
-import java.util.List;
-
-public class Enemy extends Character {
+public abstract class Enemy extends Character {
+    protected int score;
     protected AutoBot autoBot;
 
     public Enemy(int xUnit, int yUnit, Image img) {
@@ -24,7 +21,7 @@ public class Enemy extends Character {
 
     @Override
     protected void calculateMove() {
-        direction = autoBot.calculateDirection(x, y, direction);
+        direction = autoBot.calculateDirection(autoCorrectPosition(x), autoCorrectPosition(y), direction, this);
         int xa = 0, ya = 0;
         if (direction == 0) ya--;
         if (direction == 2) ya++;
@@ -34,7 +31,7 @@ public class Enemy extends Character {
     }
 
     @Override
-    protected boolean canMove(int xa, int ya) {
+    public boolean canMove(int xa, int ya) {
         Entity e = this.collision(xa, ya);
         return e != null && !(e instanceof Brick) && !(e instanceof Wall) && !(e instanceof Bomb)
                 && !(e instanceof BombItem) && !(e instanceof FlameItem) && !(e instanceof SpeedItem);
@@ -82,7 +79,12 @@ public class Enemy extends Character {
 
     @Override
     public void update() {
-
+        if (!alive) {
+            afterKill();
+            return;
+        }
+        animate();
+        calculateMove();
     }
 
     @Override
@@ -93,6 +95,10 @@ public class Enemy extends Character {
     @Override
     protected void afterKill() {
 
+    }
+
+    public int getScore() {
+        return score;
     }
 
     @Override

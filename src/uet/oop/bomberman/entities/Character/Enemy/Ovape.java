@@ -2,15 +2,17 @@ package uet.oop.bomberman.entities.Character.Enemy;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.Tiles.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 
-public class Oneal extends Enemy {
+public class Ovape extends Enemy {
 
-    public Oneal(int xUnit, int yUnit, Image img) {
+    public Ovape(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
-        score = 200;
-        velocity = 3;
-        sprite = Sprite.oneal_right1;
+        score = 2000;
+        velocity = 2;
+        sprite = Sprite.ovape_left1;
         autoBot = new AutoBot1();
     }
 
@@ -20,7 +22,7 @@ public class Oneal extends Enemy {
             if (alive) {
                 chooseSprite();
             } else {
-                sprite = Sprite.doll_dead;
+                sprite = Sprite.ovape_dead;
             }
             img = sprite.getFxImage();
 
@@ -31,19 +33,25 @@ public class Oneal extends Enemy {
     }
 
     @Override
+    public boolean canMove(int xa, int ya) {
+        Entity e = this.collision(xa, ya);
+        return e != null && !(e instanceof Wall);
+    }
+
+    @Override
     protected void chooseSprite() {
         if (moving) {
             switch (direction) {
                 case 0: case 1:
-                    sprite = Sprite.movingSprite(Sprite.oneal_right1, Sprite.oneal_right2, Sprite.oneal_right3, _animate, 30);
+                    sprite = Sprite.movingSprite(Sprite.ovape_right1, Sprite.ovape_right2, Sprite.ovape_right3, _animate, 30);
                     break;
                 case 2: case 3:
-                    sprite = Sprite.movingSprite(Sprite.oneal_left1, Sprite.oneal_left2, Sprite.oneal_left3, _animate, 30);
+                    sprite = Sprite.movingSprite(Sprite.ovape_left1, Sprite.ovape_left2, Sprite.ovape_left3, _animate, 30);
                     break;
             }
         } else {
             if (!alive) {
-                sprite = Sprite.movingSprite(Sprite.oneal_dead, Sprite.mob_dead1, Sprite.mob_dead2, Sprite.mob_dead3, _animate, 30);
+                sprite = Sprite.movingSprite(Sprite.ovape_dead, Sprite.mob_dead1, Sprite.mob_dead2, Sprite.mob_dead3, _animate, 30);
             }
         }
     }

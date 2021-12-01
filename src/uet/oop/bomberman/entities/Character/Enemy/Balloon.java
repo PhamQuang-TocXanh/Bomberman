@@ -8,21 +8,10 @@ public class Balloon extends Enemy {
 
     public Balloon(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
+        score = 100;
         velocity = 2;
         sprite = Sprite.balloom_left1;
         autoBot = new AutoBot1();
-    }
-
-    @Override
-    public void update() {
-        if (!alive) {
-            afterKill();
-            return;
-        }
-
-        animate();
-
-        calculateMove();
     }
 
     @Override
@@ -39,16 +28,6 @@ public class Balloon extends Enemy {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-    }
-
-    @Override
-    public void kill() {
-
-    }
-
-    @Override
-    protected void afterKill() {
-
     }
 
     @Override

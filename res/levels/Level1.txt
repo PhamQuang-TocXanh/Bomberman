@@ -30,6 +30,13 @@ Character:
 p - Bomber
 1 - Balloon
 2 - Oneal
+3 - Doll
+4 - Minvo
+5 - Kondoria
+6 - Ovape
+7 - Pas
+8 - PontanOrange
+9 - PontanRed
 
 Items:
 b - Bomb Item

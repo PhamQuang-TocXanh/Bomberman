@@ -7,12 +7,12 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import uet.oop.bomberman.entities.Character.Enemy.Balloon;
+import uet.oop.bomberman.entities.Character.Enemy.*;
 import uet.oop.bomberman.entities.Character.Bomber;
-import uet.oop.bomberman.entities.Character.Enemy.Doll;
-import uet.oop.bomberman.entities.Character.Enemy.Oneal;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Items.BombItem;
 import uet.oop.bomberman.entities.Items.SpeedItem;
@@ -33,11 +33,11 @@ public class BombermanGame extends Application {
     
     private GraphicsContext gc;
     private Canvas canvas;
-    private List<Entity> entities = new ArrayList<>();
+    public static List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
 
     private LevelLoader levelLoader;
-    private Bomber bomber;
+    public static Bomber bomber;
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -45,10 +45,21 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) {
-        levelLoader = new LevelLoader();
-        levelLoader.loadLevel(3);
-        WIDTH = levelLoader.getWIDTH();
-        HEIGHT = levelLoader.getHEIGHT();
+        try {
+            levelLoader = new LevelLoader();
+            if (levelLoader.loadLevel(4)) {
+                WIDTH = levelLoader.getWIDTH();
+                HEIGHT = levelLoader.getHEIGHT();
+            } else {
+                if (levelLoader.loadLevel(1)) {// level mac dinh neu khong load dc map
+                    WIDTH = levelLoader.getWIDTH();
+                    HEIGHT = levelLoader.getHEIGHT();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
@@ -62,6 +73,11 @@ public class BombermanGame extends Application {
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
+        stage.setTitle("Bomberman 25");
+//        stage.setOnCloseRequest(e -> {
+//            e.consume();
+//            logout(stage);
+//        });
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -94,6 +110,23 @@ public class BombermanGame extends Application {
         assert false;
         map = levelLoader.getMap();
     }
+    if (map == null) {
+        map = new char[HEIGHT][WIDTH];
+        for (int j = 0; j < HEIGHT; j++) {
+            for (int i = 0; i < WIDTH; i++) {
+                Entity object;
+                if (i == 0 || j == 0 || i == WIDTH - 1 || j == HEIGHT - 1) {
+                    object = new Wall(i, j, Sprite.wall.getFxImage());
+                } else {
+                    object = new Grass(i, j, Sprite.grass.getFxImage());
+                }
+                stillObjects.add(object);
+            }
+        }
+        bomber = new Bomber(1, 1, Sprite.player_right.getFxImage());
+        entities.add(bomber);
+        return;
+    }
         for (int j = 0; j < HEIGHT; j++) {
             for (int i = 0; i < WIDTH; i++) {
                 Entity object;
@@ -106,6 +139,18 @@ public class BombermanGame extends Application {
                     entities.add(new Oneal(i, j, Sprite.oneal_right1.getFxImage()));
                 } else if (map[j][i] == '3') {
                     entities.add(new Doll(i, j, Sprite.doll_left1.getFxImage()));
+                } else if (map[j][i] == '4') {
+                    entities.add(new Minvo(i, j, Sprite.minvo_right1.getFxImage()));
+                } else if (map[j][i] == '5') {
+                    entities.add(new Kondoria(i, j, Sprite.kondoria_left1.getFxImage()));
+                } else if (map[j][i] == '6') {
+                    entities.add(new Ovape(i, j, Sprite.ovape_right1.getFxImage()));
+                } else if (map[j][i] == '7') {
+                    entities.add(new Pas(i, j, Sprite.pas_left1.getFxImage()));
+                } else if (map[j][i] == '8') {
+                    entities.add(new PontanOrange(i, j, Sprite.pontan_orange_right1.getFxImage()));
+                } else if (map[j][i] == '9') {
+                    entities.add(new PontanRed(i, j, Sprite.pontan_red_left1.getFxImage()));
                 }
 
                 if (map[j][i] == '#') {
@@ -127,7 +172,7 @@ public class BombermanGame extends Application {
                 }
                 else if (map[j][i] == 'f') {
                     stillObjects.add(new Grass(i, j, Sprite.grass.getFxImage()));
-                    stillObjects.add(new BombItem(i, j, Sprite.powerup_bombs.getFxImage()));
+                    stillObjects.add(new BombItem(i, j, Sprite.powerup_flames.getFxImage()));
                     object = new Brick(i, j, Sprite.brick.getFxImage());
                 }
                 else if (map[j][i] == 's') {
@@ -140,6 +185,16 @@ public class BombermanGame extends Application {
                 }
                 stillObjects.add(object);
             }
+        }
+    }
+
+    public void logout(Stage stage) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Closing!!!");
+        alert.setHeaderText("Are you sure want to quit?");
+
+        if (alert.showAndWait().get() == ButtonType.OK) {
+            stage.close();
         }
     }
 

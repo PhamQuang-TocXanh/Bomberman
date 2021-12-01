@@ -10,7 +10,7 @@ public class LevelLoader {
     private int LEVEL = 1;
     private char[][] map;
 
-    public void loadLevel(int level) {
+    public boolean loadLevel(int level) {
         try {
             ClassLoader c = ClassLoader.getSystemClassLoader();
             File file = new File(Objects.requireNonNull(c.getResource("levels/Level" + level + ".txt")).getFile());
@@ -39,6 +39,7 @@ public class LevelLoader {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        return map != null;
     }
 
     public char[][] getMap() {

@@ -8,21 +8,10 @@ public class Doll extends Enemy {
 
     public Doll(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
-        velocity = 2;
+        score = 400;
+        velocity = 3;
         sprite = Sprite.doll_left1;
         autoBot = new AutoBot1();
-    }
-
-    @Override
-    public void update() {
-        if (!alive) {
-            afterKill();
-            return;
-        }
-
-        animate();
-
-        calculateMove();
     }
 
     @Override
@@ -39,16 +28,6 @@ public class Doll extends Enemy {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-    }
-
-    @Override
-    public void kill() {
-
-    }
-
-    @Override
-    protected void afterKill() {
-
     }
 
     @Override
