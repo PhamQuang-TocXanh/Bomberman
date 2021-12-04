@@ -9,8 +9,10 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import uet.oop.bomberman.entities.AnimatedEntity;
 import uet.oop.bomberman.entities.Character.Enemy.*;
 import uet.oop.bomberman.entities.Character.Bomber;
 import uet.oop.bomberman.entities.Entity;
@@ -30,6 +32,8 @@ public class BombermanGame extends Application {
     
     public static int WIDTH = 20;
     public static int HEIGHT = 15;
+    private int pause = 0;// le thi dung man hinh
+    public static char[][] map;
     
     private GraphicsContext gc;
     private Canvas canvas;
@@ -47,7 +51,7 @@ public class BombermanGame extends Application {
     public void start(Stage stage) {
         try {
             levelLoader = new LevelLoader();
-            if (levelLoader.loadLevel(4)) {
+            if (levelLoader.loadLevel(5)) {
                 WIDTH = levelLoader.getWIDTH();
                 HEIGHT = levelLoader.getHEIGHT();
             } else {
@@ -78,12 +82,14 @@ public class BombermanGame extends Application {
 //            e.consume();
 //            logout(stage);
 //        });
-
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                render();
-                update();
+                if (pause % 2 == 0) {
+                    render();
+                    update();
+                    removeDead();
+                }
             }
         };
         timer.start();
@@ -93,6 +99,9 @@ public class BombermanGame extends Application {
             @Override
             public void handle(KeyEvent keyEvent) {
                 bomber.getKeyboard().keyPressed(keyEvent);
+                if (keyEvent.getCode() == KeyCode.P) {
+                    pause++;
+                }
             }
         });
         scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
@@ -104,14 +113,11 @@ public class BombermanGame extends Application {
     }
 
     public void createMap() {
-        char[][] map;
-
     {
         assert false;
         map = levelLoader.getMap();
     }
     if (map == null) {
-        map = new char[HEIGHT][WIDTH];
         for (int j = 0; j < HEIGHT; j++) {
             for (int i = 0; i < WIDTH; i++) {
                 Entity object;
@@ -206,6 +212,23 @@ public class BombermanGame extends Application {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
+    }
+
+    public void removeDead() {
+        try {
+            for(int i=0;i<entities.size();i++){
+                if(entities.get(i) != null){
+                    if (!(entities.get(i) instanceof Enemy)) continue;
+                    Enemy e = (Enemy) entities.get(i);
+                    if (e.timeAfter <= 0) {
+                        entities.remove(e);
+                        i--;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public GraphicsContext getGc() {

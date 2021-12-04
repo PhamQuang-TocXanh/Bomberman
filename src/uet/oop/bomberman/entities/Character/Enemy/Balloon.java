@@ -1,6 +1,5 @@
 package uet.oop.bomberman.entities.Character.Enemy;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -12,22 +11,6 @@ public class Balloon extends Enemy {
         velocity = 2;
         sprite = Sprite.balloom_left1;
         autoBot = new AutoBot1();
-    }
-
-    @Override
-    public void render(GraphicsContext gc) {
-        try {
-            if (alive) {
-                chooseSprite();
-            } else {
-                sprite = Sprite.doll_dead;
-            }
-            img = sprite.getFxImage();
-
-            super.render(gc);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
     }
 
     @Override
@@ -43,7 +26,7 @@ public class Balloon extends Enemy {
             }
         } else {
             if (!alive) {
-                sprite = Sprite.movingSprite(Sprite.balloom_dead, Sprite.mob_dead1, Sprite.mob_dead2, Sprite.mob_dead3, _animate, 30);
+                sprite = Sprite.movingSprite(Sprite.balloom_dead, Sprite.mob_dead1, Sprite.mob_dead2, Sprite.mob_dead3, _animate, 40);
             }
         }
     }

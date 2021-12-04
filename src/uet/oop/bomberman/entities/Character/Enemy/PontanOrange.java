@@ -1,6 +1,5 @@
 package uet.oop.bomberman.entities.Character.Enemy;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -12,22 +11,6 @@ public class PontanOrange extends Enemy {
         velocity = 4;
         sprite = Sprite.pontan_orange_left1;
         autoBot = new AutoBot1();
-    }
-
-    @Override
-    public void render(GraphicsContext gc) {
-        try {
-            if (alive) {
-                chooseSprite();
-            } else {
-                sprite = Sprite.pontan_orange_dead;
-            }
-            img = sprite.getFxImage();
-
-            super.render(gc);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
     }
 
     @Override
@@ -43,7 +26,7 @@ public class PontanOrange extends Enemy {
             }
         } else {
             if (!alive) {
-                sprite = Sprite.movingSprite(Sprite.pontan_orange_dead, Sprite.mob_dead1, Sprite.mob_dead2, Sprite.mob_dead3, _animate, 30);
+                sprite = Sprite.movingSprite(Sprite.pontan_orange_dead, Sprite.mob_dead1, Sprite.mob_dead2, Sprite.mob_dead3, _animate, 40);
             }
         }
     }

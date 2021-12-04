@@ -15,22 +15,6 @@ public class Doll extends Enemy {
     }
 
     @Override
-    public void render(GraphicsContext gc) {
-        try {
-            if (alive) {
-                chooseSprite();
-            } else {
-                sprite = Sprite.doll_dead;
-            }
-            img = sprite.getFxImage();
-
-            super.render(gc);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    @Override
     protected void chooseSprite() {
         if (moving) {
             switch (direction) {
@@ -43,7 +27,7 @@ public class Doll extends Enemy {
             }
         } else {
             if (!alive) {
-                sprite = Sprite.movingSprite(Sprite.doll_dead, Sprite.mob_dead1, Sprite.mob_dead2, Sprite.mob_dead3, _animate, 30);
+                sprite = Sprite.movingSprite(Sprite.doll_dead, Sprite.mob_dead1, Sprite.mob_dead2, Sprite.mob_dead3, _animate, 40);
             }
         }
     }

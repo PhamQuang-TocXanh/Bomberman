@@ -1,6 +1,5 @@
 package uet.oop.bomberman.entities.Character.Enemy;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Tiles.Wall;
@@ -13,29 +12,14 @@ public class Ovape extends Enemy {
         score = 2000;
         velocity = 2;
         sprite = Sprite.ovape_left1;
-        autoBot = new AutoBot1();
-    }
-
-    @Override
-    public void render(GraphicsContext gc) {
-        try {
-            if (alive) {
-                chooseSprite();
-            } else {
-                sprite = Sprite.ovape_dead;
-            }
-            img = sprite.getFxImage();
-
-            super.render(gc);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        autoBot = new AutoBot2();
     }
 
     @Override
     public boolean canMove(int xa, int ya) {
         Entity e = this.collision(xa, ya);
-        return e != null && !(e instanceof Wall);
+        can_move = e != null && !(e instanceof Wall);
+        return can_move;
     }
 
     @Override
@@ -51,7 +35,7 @@ public class Ovape extends Enemy {
             }
         } else {
             if (!alive) {
-                sprite = Sprite.movingSprite(Sprite.ovape_dead, Sprite.mob_dead1, Sprite.mob_dead2, Sprite.mob_dead3, _animate, 30);
+                sprite = Sprite.movingSprite(Sprite.ovape_dead, Sprite.mob_dead1, Sprite.mob_dead2, Sprite.mob_dead3, _animate, 40);
             }
         }
     }

@@ -24,7 +24,7 @@ public abstract class Character extends AnimatedEntity {
     protected int direction = -1; //0: up, 1: right, 2: down, 3: left
     protected boolean alive = true;
     protected boolean moving = true;
-    public int timeAfter = 80;
+    public int timeAfter = 40;
     protected int velocity;
 
     public Character(int xUnit, int yUnit, Image img) {
@@ -44,13 +44,11 @@ public abstract class Character extends AnimatedEntity {
                 x = setX;
                 y += ya;
             }
-            System.out.println(direction + " " + x + " " + y);
         } else if (direction == 1 || direction == 3) {
             if(canMove(x + xa, setY)) {
                 y = setY;
                 x += xa;
             }
-            System.out.println(direction + " " + x + " " + y);
         }
     }
 
@@ -123,7 +121,7 @@ public abstract class Character extends AnimatedEntity {
         this.velocity = velocity;
     }
 
-    protected int autoCorrectPosition(int a) {
+    public int autoCorrectPosition(int a) {
         int temp = a;
         for (int i = a - Sprite.SCALED_SIZE / 4; i <= a + Sprite.SCALED_SIZE /4; i++) {
             if (i == a / Sprite.SCALED_SIZE * Sprite.SCALED_SIZE

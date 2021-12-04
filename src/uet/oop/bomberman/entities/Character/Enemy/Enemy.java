@@ -1,5 +1,6 @@
 package uet.oop.bomberman.entities.Character.Enemy;
 
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.entities.Bomb;
 import uet.oop.bomberman.entities.Character.Character;
@@ -11,17 +12,18 @@ import uet.oop.bomberman.entities.Tiles.Brick;
 import uet.oop.bomberman.entities.Tiles.Wall;
 
 public abstract class Enemy extends Character {
-    protected int score;
+    public int score;
     protected AutoBot autoBot;
+    public boolean can_move = true;
 
     public Enemy(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
-        autoBot = new AutoBot1();
+        direction = 1;
     }
 
     @Override
     protected void calculateMove() {
-        direction = autoBot.calculateDirection(autoCorrectPosition(x), autoCorrectPosition(y), direction, this);
+        direction = autoBot.calculateDirection(direction, this);
         int xa = 0, ya = 0;
         if (direction == 0) ya--;
         if (direction == 2) ya++;
@@ -33,68 +35,48 @@ public abstract class Enemy extends Character {
     @Override
     public boolean canMove(int xa, int ya) {
         Entity e = this.collision(xa, ya);
-        return e != null && !(e instanceof Brick) && !(e instanceof Wall) && !(e instanceof Bomb)
+        if (e instanceof Wall) {
+            this.kill();
+            return false;
+        }
+        can_move = e != null && !(e instanceof Brick) && !(e instanceof Wall) && !(e instanceof Bomb)
                 && !(e instanceof BombItem) && !(e instanceof FlameItem) && !(e instanceof SpeedItem);
+        return can_move;
     }
 
-//    @Override
-//    public Entity collision(int xa, int ya) {
-//        List<Entity> l = BombermanGame.stillObjects;
-//        int autoY = autoCorrectPosition(ya);
-//        int autoX = autoCorrectPosition(xa);
-//        Entity e = null;
-//
-//        if (direction == 0) {
-//            int yy = (ya) / Sprite.SCALED_SIZE * Sprite.SCALED_SIZE;
-//            for (Entity entity : l) {
-//                if (entity.getY() == yy && entity.getX() == autoX) {
-//                    e = entity;
-//                }
-//            }
-//        } else if (direction == 1){
-//            int xx = (x + Sprite.SCALED_SIZE) / Sprite.SCALED_SIZE * Sprite.SCALED_SIZE;
-//            for (Entity entity : l) {
-//                if (entity.getX() == xx && entity.getY() == autoY) {
-//                    e = entity;
-//                }
-//            }
-//        } else if (direction == 2) {
-//            int yy = (y + Sprite.SCALED_SIZE) / Sprite.SCALED_SIZE * Sprite.SCALED_SIZE;
-//            for (Entity entity : l) {
-//                if (entity.getY() == yy && entity.getX() == autoX) {
-//                    e = entity;
-//                }
-//            }
-//        } else if (direction == 3) {
-//            int xx = (xa) / Sprite.SCALED_SIZE * Sprite.SCALED_SIZE;
-//            for (Entity entity : l) {
-//                if (entity.getX() == xx && entity.getY() == autoY) {
-//                    e = entity;
-//                }
-//            }
-//        }
-//        return e;
-//    }
-
+    @Override
+    public void render(GraphicsContext gc) {
+        try {
+            chooseSprite();
+            img = sprite.getFxImage();
+            super.render(gc);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
     @Override
     public void update() {
+        animate();
         if (!alive) {
             afterKill();
             return;
         }
-        animate();
         calculateMove();
     }
 
     @Override
     public void kill() {
-
+        if(!alive) return;
+        moving = false;
+        alive = false;
+        _animate = 0;
     }
 
     @Override
     protected void afterKill() {
-
+        if (timeAfter > 0) timeAfter--;
+        System.out.println(timeAfter);
     }
 
     public int getScore() {
@@ -102,7 +84,5 @@ public abstract class Enemy extends Character {
     }
 
     @Override
-    protected void chooseSprite() {
-
-    }
+    protected abstract void chooseSprite();
 }
