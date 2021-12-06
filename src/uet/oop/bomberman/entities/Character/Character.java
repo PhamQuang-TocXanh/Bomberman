@@ -1,6 +1,7 @@
 package uet.oop.bomberman.entities.Character;
 
 
+import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
@@ -26,35 +27,64 @@ public abstract class Character extends AnimatedEntity {
     protected boolean moving = true;
     public int timeAfter = 40;
     protected int velocity;
-
+    protected Rectangle2D bounds;
     public Character(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
     }
     @Override
     public abstract void update();
+    @Override
+    public boolean collide(Entity e) {
+        return true;
+    }
 
     protected abstract void calculateMove();
 
-    protected void move(int xa, int ya) {
-        int setY = autoCorrectPosition(y);
-        int setX = autoCorrectPosition(x);
 
-        if (direction == 0 || direction == 2) {
-            if (canMove(setX, y + ya)) {
-                x = setX;
-                y += ya;
+    protected boolean canMove(int xMove, int yMove) {
+        int xTile;
+        int yTile;
+        if (xMove > 0) {//move right
+            xTile = (int) (x + xMove + bounds.getMinX() + bounds.getWidth())/Sprite.SCALED_SIZE;
+            for (int i = 0; i < 2; i++) {
+                yTile = (int) (y + bounds.getMinY() + bounds.getHeight() * i)/Sprite.SCALED_SIZE;
+                Entity e = gameMap.getTileAt(xTile, yTile);
+                if (!e.collide(this)) {
+                    return false;
+                }
             }
-        } else if (direction == 1 || direction == 3) {
-            if(canMove(x + xa, setY)) {
-                y = setY;
-                x += xa;
+        } else if (xMove < 0) { //move left
+            xTile = (int) (x + bounds.getMinX() + xMove)/Sprite.SCALED_SIZE;
+            for (int i = 0; i < 2; i++) {
+                yTile = (int) (y + bounds.getMinY() + bounds.getHeight() * i)/Sprite.SCALED_SIZE;
+                Entity e = gameMap.getTileAt(xTile, yTile);
+                if (!e.collide(this)) {
+                    return false;
+                }
             }
         }
-    }
 
-    protected boolean canMove(int xa, int ya) {
-        Entity e = this.collision(xa, ya);
-        return e != null && !(e instanceof Brick) && !(e instanceof Wall) && !(e instanceof Bomb);
+        if (yMove < 0) { // move up
+            yTile = (int) (y + bounds.getMinY() + yMove)/Sprite.SCALED_SIZE;
+            for (int i = 0; i < 2; i++) {
+                xTile = (int) (x + bounds.getMinX() + bounds.getWidth() * i)/Sprite.SCALED_SIZE;
+                Entity e = gameMap.getTileAt(xTile, yTile);
+                if (!e.collide(this)) {
+                    return false;
+                }
+            }
+        } else if (yMove > 0) { //move down
+            yTile = (int) (y + yMove + bounds.getMinY() + bounds.getHeight())/Sprite.SCALED_SIZE;
+            for (int i = 0; i < 2; i++) {
+                xTile = (int) (x + bounds.getMinX() + bounds.getWidth() * i)/Sprite.SCALED_SIZE;
+                Entity e = gameMap.getTileAt(xTile, yTile);
+                if (!e.collide(this)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     public Entity collision(int xa, int ya) {

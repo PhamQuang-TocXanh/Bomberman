@@ -1,13 +1,14 @@
 package uet.oop.bomberman.entities.Character.Enemy;
 
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.Map;
 import uet.oop.bomberman.entities.Character.Bomber;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.Random;
 
 public class AutoBot2 implements AutoBot {
-    private final Bomber bomber = BombermanGame.bomber;
+    private final Bomber bomber = Map.bomber;
     private Random random;
     protected long changeDirectionTime;
 

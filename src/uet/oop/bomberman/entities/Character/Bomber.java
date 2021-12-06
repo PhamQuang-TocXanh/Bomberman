@@ -1,5 +1,6 @@
 package uet.oop.bomberman.entities.Character;
 
+import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
@@ -19,9 +20,10 @@ public class Bomber extends Character {
 
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
-        velocity = 3;
+        velocity = 2;
         sprite = Sprite.player_right;
         input = new Keyboard();
+        bounds = new Rectangle2D(0, 4, 24, Sprite.SCALED_SIZE - 6);
     }
 
     @Override
@@ -67,13 +69,20 @@ public class Bomber extends Character {
         }
     }
 
-    @Override
+
     protected void move(int xa, int ya) {
         if (ya < 0) direction = 0; // up
         if (ya > 0) direction = 2; // down
         if (xa > 0) direction = 1; // right
         if (xa < 0) direction = 3; // left
-        super.move(xa, ya);
+       // super.move(xa, ya);
+        if(canMove(xa, 0)) {
+            x += xa;
+        }
+
+        if(canMove(0, ya)) {
+            y += ya;
+        }
     }
 
     @Override
@@ -85,12 +94,56 @@ public class Bomber extends Character {
     protected void afterKill() {
 
     }
+/*
+    @Override
+    protected boolean canMove(int xMove, int yMove) {
+        int xTile;
+        int yTile;
+        if (xMove > 0) {//move right
+            xTile = (int) (x + xMove + bounds.getWidth())/Sprite.SCALED_SIZE;
+            for (int i = 0; i < 2; i++) {
+                yTile = (int) (y + bounds.getMinY() + bounds.getHeight() * i)/Sprite.SCALED_SIZE;
+                Entity e = gameMap.getTileAt(xTile, yTile);
+                if (!e.collide(this)) {
+                    System.out.println(yTile + "-" + xTile);
+                    return false;
+                }
+            }
+        } else if (xMove < 0) { //move left
+            xTile = (int) (x + xMove)/Sprite.SCALED_SIZE;
+            for (int i = 0; i < 2; i++) {
+                yTile = (int) (y + bounds.getMinY() + bounds.getHeight() * i)/Sprite.SCALED_SIZE;
+                Entity e = gameMap.getTileAt(xTile, yTile);
+                if (!e.collide(this)) {
+                    System.out.println(yTile + "-" + xTile);
+                    return false;
+                }
+            }
+        }
 
-//    @Override
-//    protected boolean canMove(int x, int y) {
-//        return true;
-//    }
-
+        if (yMove < 0) { // move up
+            yTile = (int) (y + bounds.getMinY() + yMove)/Sprite.SCALED_SIZE;
+            for (int i = 0; i < 2; i++) {
+                xTile = (int) (x + bounds.getWidth() * i)/Sprite.SCALED_SIZE;
+                Entity e = gameMap.getTileAt(xTile, yTile);
+                if (!e.collide(this)) {
+                    System.out.println(yTile + "-" + xTile);
+                    return false;
+                }
+            }
+        } else if (yMove > 0) { //move down
+            yTile = (int) (y + bounds.getMinY() + yMove + bounds.getHeight())/Sprite.SCALED_SIZE;
+            for (int i = 0; i < 2; i++) {
+                xTile = (int) (x + bounds.getWidth() * i)/Sprite.SCALED_SIZE;
+                Entity e = gameMap.getTileAt(xTile, yTile);
+                if (!e.collide(this)) {
+                    System.out.println(yTile + "-" + xTile);
+                    return false;
+                }
+            }
+        }
+        return true;
+    }*/
     public Keyboard getKeyboard() {
         return input;
     }

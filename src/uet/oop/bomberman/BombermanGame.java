@@ -42,6 +42,7 @@ public class BombermanGame extends Application {
 
     private LevelLoader levelLoader;
     public static Bomber bomber;
+    public static Map gameMap = Map.getMap();
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -49,6 +50,7 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) {
+        /*
         try {
             levelLoader = new LevelLoader();
             if (levelLoader.loadLevel(5)) {
@@ -64,6 +66,11 @@ public class BombermanGame extends Application {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
+        */
+        gameMap.createMap();
+        WIDTH= gameMap.WIDTH;
+        HEIGHT = gameMap.HEIGHT;
+        bomber = gameMap.bomber;
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
@@ -82,19 +89,28 @@ public class BombermanGame extends Application {
 //            e.consume();
 //            logout(stage);
 //        });
+
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
                 if (pause % 2 == 0) {
+                    /*
                     render();
                     update();
                     removeDead();
+                    */
+                    gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+                    gameMap.updateMap();
+                    gameMap.renderMap(gc);
+
                 }
             }
         };
         timer.start();
-
+        /* QUang
         createMap();
+        */
+
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {

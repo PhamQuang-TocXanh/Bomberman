@@ -1,5 +1,6 @@
 package uet.oop.bomberman.entities.Character.Enemy;
 
+import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.entities.Bomb;
@@ -10,6 +11,7 @@ import uet.oop.bomberman.entities.Items.FlameItem;
 import uet.oop.bomberman.entities.Items.SpeedItem;
 import uet.oop.bomberman.entities.Tiles.Brick;
 import uet.oop.bomberman.entities.Tiles.Wall;
+import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class Enemy extends Character {
     public int score;
@@ -19,6 +21,7 @@ public abstract class Enemy extends Character {
     public Enemy(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
         direction = 1;
+        bounds = new Rectangle2D(0, 0, Sprite.SCALED_SIZE - 1, Sprite.SCALED_SIZE - 1);
     }
 
     @Override
@@ -32,6 +35,22 @@ public abstract class Enemy extends Character {
         move(xa * velocity, ya * velocity);
     }
 
+    protected void move(int xa, int ya) {
+        can_move = false;
+        if (direction == 0 || direction == 2) {
+            if (canMove(0, ya)) {
+                can_move = true;
+                y += ya;
+            }
+        } else if (direction == 1 || direction == 3) {
+            if(canMove(xa, 0)) {
+                can_move = true;
+                x += xa;
+            }
+        }
+    }
+
+/*
     @Override
     public boolean canMove(int xa, int ya) {
         Entity e = this.collision(xa, ya);
@@ -43,7 +62,7 @@ public abstract class Enemy extends Character {
                 && !(e instanceof BombItem) && !(e instanceof FlameItem) && !(e instanceof SpeedItem);
         return can_move;
     }
-
+*/
     @Override
     public void render(GraphicsContext gc) {
         try {
