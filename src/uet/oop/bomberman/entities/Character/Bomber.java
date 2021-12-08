@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bomber extends Character {
+    private int life;
     protected Keyboard input;
     private List<Bomb> _bombs;
 
@@ -24,6 +25,7 @@ public class Bomber extends Character {
         sprite = Sprite.player_right;
         input = new Keyboard();
         bounds = new Rectangle2D(0, 4, 24, Sprite.SCALED_SIZE - 6);
+        life = 1;
     }
 
     @Override
@@ -158,6 +160,14 @@ public class Bomber extends Character {
 
     public void set_bombs(List<Bomb> _bombs) {
         this._bombs = _bombs;
+    }
+
+    public void setLife(int life) {
+        this.life = life;
+    }
+
+    public int getLife() {
+        return life;
     }
 
     @Override

@@ -14,14 +14,14 @@ import uet.oop.bomberman.entities.Tiles.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class Enemy extends Character {
-    public int score;
+    protected int score;
     protected AutoBot autoBot;
     public boolean can_move = true;
 
     public Enemy(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
         direction = 1;
-        bounds = new Rectangle2D(0, 0, Sprite.SCALED_SIZE - 1, Sprite.SCALED_SIZE - 1);
+        bounds = new Rectangle2D(2, 2, Sprite.SCALED_SIZE - 4, Sprite.SCALED_SIZE - 4);
     }
 
     @Override
@@ -95,7 +95,6 @@ public abstract class Enemy extends Character {
     @Override
     protected void afterKill() {
         if (timeAfter > 0) timeAfter--;
-        System.out.println(timeAfter);
     }
 
     public int getScore() {

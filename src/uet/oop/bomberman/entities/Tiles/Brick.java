@@ -1,6 +1,7 @@
 package uet.oop.bomberman.entities.Tiles;
 
 import javafx.scene.image.Image;
+import uet.oop.bomberman.entities.Character.Character;
 import uet.oop.bomberman.entities.Entity;
 
 public class Brick extends Entity {
@@ -16,6 +17,12 @@ public class Brick extends Entity {
 
     @Override
     public boolean collide(Entity e) {
+        if (e instanceof Character && ((Character)e).isWallPass()) {
+            return true;
+        }
+        if (e instanceof Character) {
+            ((Character) e).kill();
+        }
         return false;
     }
 }

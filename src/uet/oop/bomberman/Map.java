@@ -19,8 +19,8 @@ public class Map {
 
     public int WIDTH;
     public int HEIGHT;
-    public int level = 1;
-    public Entity tiles[][];
+    public static int level = 3;
+    public Entity[][] tiles;
     public ArrayList<Character> characters = new ArrayList<>();
     public static Bomber bomber;
     private LevelLoader levelLoader = new LevelLoader();
@@ -79,6 +79,7 @@ public class Map {
         }
 
         characters.forEach(Character::update);
+        removeDead();
     }
 
     public void renderMap(GraphicsContext gc) {
@@ -93,5 +94,24 @@ public class Map {
 
     public Entity getTileAt(int x, int y) {
         return tiles[y][x];
+    }
+
+    public void removeDead() {
+        try {
+            for(int i=0;i<characters.size();i++){
+                if(characters.get(i) != null){
+                    if (!(characters.get(i) instanceof Enemy)) continue;
+                    Enemy e = (Enemy) characters.get(i);
+                    if (e.timeAfter <= 0) {
+                        characters.remove(e);
+                        BombermanGame.SCORE += e.getScore();
+                        System.out.println(BombermanGame.SCORE);
+                        i--;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

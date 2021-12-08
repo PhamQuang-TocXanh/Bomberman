@@ -28,6 +28,9 @@ public abstract class Character extends AnimatedEntity {
     public int timeAfter = 40;
     protected int velocity;
     protected Rectangle2D bounds;
+    protected boolean wallPass = false;
+    protected boolean bombPass = false;
+    protected boolean flamePass = false;
     public Character(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
     }
@@ -149,6 +152,18 @@ public abstract class Character extends AnimatedEntity {
 
     public void setVelocity(int velocity) {
         this.velocity = velocity;
+    }
+
+    public boolean isWallPass() {
+        return wallPass;
+    }
+
+    public boolean isBombPass() {
+        return bombPass;
+    }
+
+    public boolean isFlamePass() {
+        return flamePass;
     }
 
     public int autoCorrectPosition(int a) {

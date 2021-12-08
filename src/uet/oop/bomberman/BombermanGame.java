@@ -3,7 +3,6 @@ package uet.oop.bomberman;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -11,8 +10,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import uet.oop.bomberman.entities.AnimatedEntity;
 import uet.oop.bomberman.entities.Character.Enemy.*;
 import uet.oop.bomberman.entities.Character.Bomber;
 import uet.oop.bomberman.entities.Entity;
@@ -24,6 +23,7 @@ import uet.oop.bomberman.entities.Tiles.Portal;
 import uet.oop.bomberman.entities.Tiles.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.level.LevelLoader;
+import uet.oop.bomberman.level.NotificationBoard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +32,11 @@ public class BombermanGame extends Application {
     
     public static int WIDTH = 20;
     public static int HEIGHT = 15;
-    private int pause = 0;// le thi dung man hinh
+    public static int SCORE = 0;
+    public static int pause = 0;// le thi dung man hinh
     public static char[][] map;
-    
+
+    public static Stage stage;
     private GraphicsContext gc;
     private Canvas canvas;
     public static List<Entity> entities = new ArrayList<>();
@@ -49,7 +51,8 @@ public class BombermanGame extends Application {
     }
 
     @Override
-    public void start(Stage stage) {
+    public void start(Stage mainStage) {
+        stage = mainStage;
         /*
         try {
             levelLoader = new LevelLoader();
@@ -70,15 +73,17 @@ public class BombermanGame extends Application {
         gameMap.createMap();
         WIDTH= gameMap.WIDTH;
         HEIGHT = gameMap.HEIGHT;
-        bomber = gameMap.bomber;
+        bomber = Map.bomber;
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
         // Tao root container
-        Group root = new Group();
+        VBox root = new VBox();
+        root.getChildren().add(NotificationBoard.scoreBoard());
         root.getChildren().add(canvas);
         // Tao scene
         Scene scene = new Scene(root);
+        Scene pauseScene = NotificationBoard.pauseBoard();
 
         // Them scene vao stage
         stage.setResizable(false);
@@ -102,7 +107,10 @@ public class BombermanGame extends Application {
                     gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
                     gameMap.updateMap();
                     gameMap.renderMap(gc);
-
+                    NotificationBoard.updateScoreBoard();
+                    stage.setScene(scene);
+                } else {
+                    stage.setScene(pauseScene);
                 }
             }
         };
