@@ -2,24 +2,13 @@ package uet.oop.bomberman.entities.Character;
 
 
 import javafx.geometry.Rectangle2D;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.AnimatedEntity;
-import uet.oop.bomberman.entities.Bomb;
-import uet.oop.bomberman.entities.Character.Enemy.AutoBot;
-import uet.oop.bomberman.entities.Character.Enemy.AutoBot1;
 import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.Items.BombItem;
-import uet.oop.bomberman.entities.Items.FlameItem;
-import uet.oop.bomberman.entities.Items.SpeedItem;
-import uet.oop.bomberman.entities.Tiles.Brick;
-import uet.oop.bomberman.entities.Tiles.Grass;
-import uet.oop.bomberman.entities.Tiles.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.List;
-import java.util.Random;
 
 public abstract class Character extends AnimatedEntity {
     protected int direction = -1; //0: up, 1: right, 2: down, 3: left
@@ -31,15 +20,16 @@ public abstract class Character extends AnimatedEntity {
     protected boolean wallPass = false;
     protected boolean bombPass = false;
     protected boolean flamePass = false;
+
     public Character(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
     }
     @Override
     public abstract void update();
+
     @Override
-    public boolean collide(Entity e) {
-        return true;
-    }
+    public abstract boolean collide(Entity e);
+
 
     protected abstract void calculateMove();
 
@@ -51,7 +41,8 @@ public abstract class Character extends AnimatedEntity {
             xTile = (int) (x + xMove + bounds.getMinX() + bounds.getWidth())/Sprite.SCALED_SIZE;
             for (int i = 0; i < 2; i++) {
                 yTile = (int) (y + bounds.getMinY() + bounds.getHeight() * i)/Sprite.SCALED_SIZE;
-                Entity e = gameMap.getTileAt(xTile, yTile);
+                Entity e = gameMap.getEntityAtTile(xTile, yTile);
+               // Entity e = gameMap.getTileAt(xTile, yTile);
                 if (!e.collide(this)) {
                     return false;
                 }
@@ -60,7 +51,8 @@ public abstract class Character extends AnimatedEntity {
             xTile = (int) (x + bounds.getMinX() + xMove)/Sprite.SCALED_SIZE;
             for (int i = 0; i < 2; i++) {
                 yTile = (int) (y + bounds.getMinY() + bounds.getHeight() * i)/Sprite.SCALED_SIZE;
-                Entity e = gameMap.getTileAt(xTile, yTile);
+                Entity e = gameMap.getEntityAtTile(xTile, yTile);
+                // Entity e = gameMap.getTileAt(xTile, yTile);
                 if (!e.collide(this)) {
                     return false;
                 }
@@ -71,7 +63,8 @@ public abstract class Character extends AnimatedEntity {
             yTile = (int) (y + bounds.getMinY() + yMove)/Sprite.SCALED_SIZE;
             for (int i = 0; i < 2; i++) {
                 xTile = (int) (x + bounds.getMinX() + bounds.getWidth() * i)/Sprite.SCALED_SIZE;
-                Entity e = gameMap.getTileAt(xTile, yTile);
+                Entity e = gameMap.getEntityAtTile(xTile, yTile);
+                // Entity e = gameMap.getTileAt(xTile, yTile);
                 if (!e.collide(this)) {
                     return false;
                 }
@@ -80,7 +73,8 @@ public abstract class Character extends AnimatedEntity {
             yTile = (int) (y + yMove + bounds.getMinY() + bounds.getHeight())/Sprite.SCALED_SIZE;
             for (int i = 0; i < 2; i++) {
                 xTile = (int) (x + bounds.getMinX() + bounds.getWidth() * i)/Sprite.SCALED_SIZE;
-                Entity e = gameMap.getTileAt(xTile, yTile);
+                Entity e = gameMap.getEntityAtTile(xTile, yTile);
+                // Entity e = gameMap.getTileAt(xTile, yTile);
                 if (!e.collide(this)) {
                     return false;
                 }
@@ -176,5 +170,13 @@ public abstract class Character extends AnimatedEntity {
         }
 
         return temp;
+    }
+
+    public int getXTile() {
+        return (x + Sprite.SCALED_SIZE/2) / Sprite.SCALED_SIZE;
+    }
+
+    public int getYTile() {
+        return (y + Sprite.SCALED_SIZE/2) / Sprite.SCALED_SIZE;
     }
 }

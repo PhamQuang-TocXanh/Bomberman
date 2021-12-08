@@ -30,7 +30,7 @@ public class AutoBot2 implements AutoBot {
                 return h != -1 ? h : rowDirection(myEnemy);
             }
         }
-        if (!myEnemy.can_move || System.currentTimeMillis() - changeDirectionTime >= 3000) {
+        else if (!myEnemy.can_move || System.currentTimeMillis() - changeDirectionTime >= 3000) {
             changeDirectionTime = System.currentTimeMillis();
             return random.nextInt(4);
         }
@@ -41,12 +41,14 @@ public class AutoBot2 implements AutoBot {
         if (bomber.getX() < myEnemy.getX()) return 3;
         if (bomber.getX() / Sprite.SCALED_SIZE > myEnemy.getX() / Sprite.SCALED_SIZE) return 1;
         return - 1;
+
     }
 
     protected int rowDirection(Enemy myEnemy) {
         if (bomber.getY() < myEnemy.getY()) return 0;
         if (bomber.getY() / Sprite.SCALED_SIZE > myEnemy.getY() / Sprite.SCALED_SIZE) return 2;
         return - 1;
+
     }
 
     private double distance(Enemy myEnemy) {

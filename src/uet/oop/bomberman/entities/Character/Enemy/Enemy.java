@@ -3,14 +3,9 @@ package uet.oop.bomberman.entities.Character.Enemy;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import uet.oop.bomberman.entities.Bomb;
+import uet.oop.bomberman.entities.Bomb.Explosion;
 import uet.oop.bomberman.entities.Character.Character;
 import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.Items.BombItem;
-import uet.oop.bomberman.entities.Items.FlameItem;
-import uet.oop.bomberman.entities.Items.SpeedItem;
-import uet.oop.bomberman.entities.Tiles.Brick;
-import uet.oop.bomberman.entities.Tiles.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class Enemy extends Character {
@@ -22,6 +17,7 @@ public abstract class Enemy extends Character {
         super(xUnit, yUnit, img);
         direction = 1;
         bounds = new Rectangle2D(2, 2, Sprite.SCALED_SIZE - 4, Sprite.SCALED_SIZE - 4);
+
     }
 
     @Override
@@ -50,19 +46,28 @@ public abstract class Enemy extends Character {
         }
     }
 
-/*
     @Override
-    public boolean canMove(int xa, int ya) {
-        Entity e = this.collision(xa, ya);
-        if (e instanceof Wall) {
+    public boolean collide(Entity e) {
+        if (e instanceof Explosion) {
             this.kill();
             return false;
         }
-        can_move = e != null && !(e instanceof Brick) && !(e instanceof Wall) && !(e instanceof Bomb)
-                && !(e instanceof BombItem) && !(e instanceof FlameItem) && !(e instanceof SpeedItem);
-        return can_move;
+        return true;
     }
-*/
+
+    /*
+        @Override
+        public boolean canMove(int xa, int ya) {
+            Entity e = this.collision(xa, ya);
+            if (e instanceof Wall) {
+                this.kill();
+                return false;
+            }
+            can_move = e != null && !(e instanceof Brick) && !(e instanceof Wall) && !(e instanceof Bomb)
+                    && !(e instanceof BombItem) && !(e instanceof FlameItem) && !(e instanceof SpeedItem);
+            return can_move;
+        }
+    */
     @Override
     public void render(GraphicsContext gc) {
         try {
