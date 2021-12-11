@@ -1,6 +1,6 @@
 1 13 31
 ###############################
-#p     *d *  j * k *  * * *   #
+#p     ?d *  j * k *  * * *   #
 # # # #*# # #*#*# # # #*#*#*# #
 #  x*     ***  *  l   * 2 * b #
 # # # # # #*# # #*#*# # # # #*#
@@ -23,3 +23,4 @@ d - Detonator Item
 j - Wallpass Item
 k - Bombpass Item
 l - Flamepass Item
+? - Mystery Item

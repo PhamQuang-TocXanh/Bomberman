@@ -22,6 +22,8 @@ public class Bomber extends Character {
     private int timeBeforeNextBomb = 0;
     private int timeBeforeNextDetonate = 0;
     private boolean canDetonate = false;
+    private boolean invincible = false;
+    private int invincibleTime = 400;
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
         velocity = 2;
@@ -39,7 +41,9 @@ public class Bomber extends Character {
             afterKill();
             return;
         } else {
-
+            if (invincible) {
+                invincibleTimeCheck();
+            }
             calculateMove();
 
             placeBomb();
@@ -102,7 +106,7 @@ public class Bomber extends Character {
     @Override
     public void kill() {
 
-        if (!alive) return;
+        if (!alive || invincible) return;
 
         alive = false;
         _animate = 0;
@@ -138,6 +142,17 @@ public class Bomber extends Character {
             bombs.get(bombs.size() - 1).setTimeBeforeExplode(1);
         } else timeBeforeNextDetonate--;
     }
+
+    public void invincibleTimeCheck() {
+        if (invincibleTime > 0) {
+            invincibleTime --;
+        } else {
+            System.out.println("end invincible");
+            invincible = false;
+            invincibleTime = 400;
+        }
+    }
+
     /* Power up */
     public void increaseMaxBombs() {
         ++maxBombs;
@@ -165,6 +180,10 @@ public class Bomber extends Character {
 
     public void setCanDetonate() {
         canDetonate = true;
+    }
+
+    public void setInvincible() {
+        invincible = true;
     }
 /*
     @Override

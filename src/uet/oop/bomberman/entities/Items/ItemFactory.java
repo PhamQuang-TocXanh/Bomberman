@@ -32,6 +32,8 @@ public class ItemFactory {
             case 'd':
                 new DetonatorItem(i, j, Sprite.powerup_detonator.getFxImage());
                 break;
+            case '?':
+                new MysteryItem(i, j, Sprite.powerup_mystery.getFxImage());
         }
     }
 }
