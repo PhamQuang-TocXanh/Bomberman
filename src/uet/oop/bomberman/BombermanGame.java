@@ -19,7 +19,7 @@ import uet.oop.bomberman.entities.Items.BombItem;
 import uet.oop.bomberman.entities.Items.SpeedItem;
 import uet.oop.bomberman.entities.Tiles.Grass;
 import uet.oop.bomberman.entities.Tiles.Brick;
-import uet.oop.bomberman.entities.Tiles.Portal;
+import uet.oop.bomberman.entities.Items.Portal;
 import uet.oop.bomberman.entities.Tiles.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.level.LevelLoader;

@@ -7,16 +7,20 @@ import uet.oop.bomberman.entities.AnimatedEntity;
 import uet.oop.bomberman.entities.Character.Bomber;
 import uet.oop.bomberman.entities.Character.Character;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.Items.Item;
 import uet.oop.bomberman.entities.Tiles.Brick;
 import uet.oop.bomberman.entities.Tiles.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.Iterator;
+import java.util.List;
 
 public class Bomb extends AnimatedEntity {
     private int timeBeforeExplode = 120;
-    private int timeBeforeRemove = 20;
+    private int timeBeforeRemove = 15;
     private boolean isExploded = false;
+    private boolean isRemoved = false;
+    private boolean isBomberPass = false;
     private int xTile;
     private int yTile;
     private Explosion[][] explosions;
@@ -53,9 +57,17 @@ public class Bomb extends AnimatedEntity {
 
     @Override
     public boolean collide(Entity e) {
+        if (e instanceof Character && ((Character) e).isBombPass()) {
+            return true;
+        }
+
         if (e instanceof Bomber) {
            // check
-            return true;
+            Bomber b = (Bomber) e;
+            if (b.getXTile() != this.xTile || b.getYTile() != this.yTile) {
+                isBomberPass = true;
+            }
+            return !isBomberPass;
         }
         return false;
     }
@@ -64,7 +76,14 @@ public class Bomb extends AnimatedEntity {
         isExploded = true;
         int length = gameMap.bomber.getBombLength();
         explosions = new Explosion[5][length];
-        explosions[4][0] = new Explosion(xTile, yTile,-1,false); // center
+        // center
+        explosions[4][0] = new Explosion(xTile, yTile,-1,false);
+        List<Character> characters = gameMap.getCharactersAtTile(xTile, yTile);
+        if (!characters.isEmpty()) {
+            characters.forEach(character -> character.collide(explosions[4][0]));
+        }
+
+        // 4 direction
         int[] xDirection = {0, 1, 0, -1}; // hướng x y
         int[] yDirection = {-1, 0, 1, 0};
 
@@ -75,12 +94,16 @@ public class Bomb extends AnimatedEntity {
                 if (tileX < 0 || tileX >= gameMap.WIDTH || tileY < 0 || tileY >= gameMap.HEIGHT) {
                     break;
                 }
-                Entity e = gameMap.getTileAt(tileX, tileY);
-                if (e instanceof Wall) {
+                Entity tile = gameMap.getTileAt(tileX, tileY);
+                if (tile instanceof Item) {
+                    ((Item) tile).destroy();
                     break;
                 }
-                if (e instanceof Brick) {
-                    ((Brick) e).destroy();
+                if (tile instanceof Wall) {
+                    break;
+                }
+                if (tile instanceof Brick) {
+                    ((Brick) tile).destroy();
                     break;
                 }
                 if (direction % 2 == 0) { // up down
@@ -88,9 +111,11 @@ public class Bomb extends AnimatedEntity {
                 } else { // right left
                     explosions[direction][i] = new Explosion(tileX, tileY, direction, i == length - 1);
                 }
-                Character character = gameMap.getCharacterAtTile(tileX, tileY);
-                if (character != null) {
-                    character.collide(explosions[direction][i]);
+                characters = gameMap.getCharactersAtTile(tileX, tileY);
+                if (!characters.isEmpty()) {
+                    for (Character ch : characters) {
+                        ch.collide(explosions[direction][i]);
+                    }
                 }
                 Bomb bomb = gameMap.getBombAt(tileX, tileY);
                 if (bomb != null) {
@@ -138,7 +163,8 @@ public class Bomb extends AnimatedEntity {
     }
 
     private void remove() {
-        gameMap.bombs.remove(this);
+        //gameMap.bombs.remove(this);
+        isRemoved = true;
         gameMap.bomber.decreaseUsedBombs();
     }
 
@@ -160,5 +186,9 @@ public class Bomb extends AnimatedEntity {
 
     public void setTimeBeforeExplode(int timeBeforeExplode) {
         this.timeBeforeExplode = timeBeforeExplode;
+    }
+
+    public boolean getIsRemoved() {
+        return isRemoved;
     }
 }

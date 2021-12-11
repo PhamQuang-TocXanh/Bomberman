@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.entities.Bomb.Bomb;
 import uet.oop.bomberman.entities.Bomb.Explosion;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.Tiles.Grass;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.input.Keyboard;
 
@@ -15,10 +16,12 @@ public class Bomber extends Character {
     private int life;
     protected Keyboard input;
     private List<Bomb> bombs;
-    private int maxBombs = 2;
+    private int maxBombs = 3;
     private int usedBombs = 0;
     private int bombLength = 2;
     private int timeBeforeNextBomb = 0;
+    private int timeBeforeNextDetonate = 0;
+    private boolean canDetonate = false;
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
         velocity = 2;
@@ -26,9 +29,7 @@ public class Bomber extends Character {
         input = new Keyboard();
         bounds = new Rectangle2D(0, 4, 24, Sprite.SCALED_SIZE - 6);
         life = 1;
-
         bombs = gameMap.bombs;
-
     }
 
     @Override
@@ -38,18 +39,12 @@ public class Bomber extends Character {
             afterKill();
             return;
         } else {
-            // time between put bomb
-            /*
-            if (timeBeforeNextBomb < -500 ) {
-                timeBeforeNextBomb = 0;
-            } else {
-                timeBeforeNextBomb--;
-            }*/
 
             calculateMove();
 
-            // dectect place bomb
             placeBomb();
+
+            detonateBomb();
         }
     }
 
@@ -65,8 +60,8 @@ public class Bomber extends Character {
 
     @Override
     public boolean collide(Entity e) {
-        if (e instanceof Explosion) {
-            System.out.println("bommmm");
+        if (e instanceof Explosion && !flamePass) {
+            kill();
         }
 
         return true;
@@ -106,12 +101,12 @@ public class Bomber extends Character {
 
     @Override
     public void kill() {
-        /*
+
         if (!alive) return;
 
         alive = false;
         _animate = 0;
-        */
+
         System.out.println("killed");
     }
 
@@ -126,7 +121,9 @@ public class Bomber extends Character {
 
     public void placeBomb() {
         if(input.space && usedBombs < maxBombs && timeBeforeNextBomb < 0) {
-            timeBeforeNextBomb = 30;
+            if (!(gameMap.getTileAt(this.getXTile(), this.getYTile()) instanceof Grass)) return;
+            if (gameMap.getBombAt(this.getXTile(), this.getYTile()) != null) return;
+            timeBeforeNextBomb = 20;
             usedBombs++;
             Bomb b = new Bomb(this.getXTile(), this.getYTile(), Sprite.bomb.getFxImage());
             gameMap.bombs.add(b);
@@ -134,6 +131,41 @@ public class Bomber extends Character {
         else timeBeforeNextBomb--;
     }
 
+    public void detonateBomb() {
+        if (canDetonate && input.detonate && timeBeforeNextDetonate < 0 && !bombs.isEmpty()) {
+            // có thể kích nổ nhiều lần k?
+            timeBeforeNextDetonate = 30;
+            bombs.get(bombs.size() - 1).setTimeBeforeExplode(1);
+        } else timeBeforeNextDetonate--;
+    }
+    /* Power up */
+    public void increaseMaxBombs() {
+        ++maxBombs;
+    }
+
+    public void increaseBombLength() {
+        ++bombLength;
+    }
+
+    public void increaseSpeed() {
+        ++velocity;
+    }
+
+    public void canPassWall() {
+        wallPass = true;
+    }
+
+    public void canPassBomb() {
+        bombPass = true;
+    }
+
+    public void canPassFlame() {
+        flamePass = true;
+    }
+
+    public void setCanDetonate() {
+        canDetonate = true;
+    }
 /*
     @Override
     protected boolean canMove(int xMove, int yMove) {
@@ -212,6 +244,7 @@ public class Bomber extends Character {
     protected void chooseSprite() {
         if (!alive) {
             sprite = Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, _animate, 40);
+            return;
         }
 
         switch(direction) {

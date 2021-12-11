@@ -10,7 +10,7 @@ import uet.oop.bomberman.graphics.Sprite;
 public class Brick extends AnimatedEntity {
 
     private boolean isDestroyed = false;
-    private int timeBeforeRemove = 30;
+    private int timeBeforeRemove = 20;
     public Brick(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
         gameMap.tiles[yUnit][xUnit] = this;

@@ -7,8 +7,6 @@ import uet.oop.bomberman.entities.Character.Character;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
 
-import javax.swing.*;
-
 public class Explosion extends AnimatedEntity {
 
     private int xTile, yTile;
@@ -38,8 +36,9 @@ public class Explosion extends AnimatedEntity {
 
     @Override
     public boolean collide(Entity e) {
-        if (e instanceof Character) {
+        if (e instanceof Character && !((Character) e).isFlamePass()) {
             ((Character) e).kill();
+
         }
         return true;
     }

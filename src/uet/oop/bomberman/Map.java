@@ -9,6 +9,8 @@ import uet.oop.bomberman.entities.Character.CharacterFactory;
 import uet.oop.bomberman.entities.Character.Enemy.*;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Items.BombItem;
+import uet.oop.bomberman.entities.Items.Item;
+import uet.oop.bomberman.entities.Items.ItemFactory;
 import uet.oop.bomberman.entities.Items.SpeedItem;
 import uet.oop.bomberman.entities.Tiles.*;
 import uet.oop.bomberman.graphics.Sprite;
@@ -16,6 +18,7 @@ import uet.oop.bomberman.level.LevelLoader;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Map {
     private static Map gameMap = new Map();
@@ -23,10 +26,12 @@ public class Map {
 
     public int WIDTH;
     public int HEIGHT;
-    public static int level = 1;
+    public static int level = 6;
     public Entity[][] tiles;
     public ArrayList<Character> characters = new ArrayList<>();
-    public LinkedList<Bomb> bombs = new LinkedList<>();
+    public ArrayList<Bomb> bombs = new ArrayList<>();
+    //public LinkedList<Bomb> bombs = new LinkedList<>();
+    public ArrayList<Item> items = new ArrayList<>();
     public static Bomber bomber;
     private LevelLoader levelLoader = new LevelLoader();
     public static Map getMap() {
@@ -37,6 +42,7 @@ public class Map {
         tiles = new Entity[HEIGHT][WIDTH];
         characters.clear();
         bombs.clear();
+        items.clear();
     }
 
     public void createMap() {
@@ -52,6 +58,7 @@ public class Map {
                 char c = mapInput[j][i];
                 CharacterFactory.getCharacter(i , j, c);
                 TileFactory.getTile(i, j, c);
+                ItemFactory.getItem(i, j, c);
             }
         }
     }
@@ -70,7 +77,6 @@ public class Map {
         for(Bomb b : bombs) {
             b.update();
         }
-
     }
 
     public void renderMap(GraphicsContext gc) {
@@ -82,19 +88,26 @@ public class Map {
 
         bombs.forEach(b -> b.render(gc));
         characters.forEach(ch -> ch.render(gc));
+        items.forEach(item -> item.render(gc));
     }
 
     public Entity getTileAt(int x, int y) {
+        for (Item item : items) {
+            if (item.getxTile() == x && item.getyTile() == y) {
+                return item;
+            }
+        }
         return tiles[y][x];
     }
 
-    public Character getCharacterAtTile(int x, int y) {
+    public List<Character> getCharactersAtTile(int x, int y) {
+        ArrayList<Character> out = new ArrayList<>();
         for (Character character : characters) {
             if(character.getXTile() == x && character.getYTile() == y) {
-                return character;
+                out.add(character);
             }
         }
-        return null;
+        return out;
     }
 
     public Bomb getBombAt(int x, int y) {
@@ -144,5 +157,11 @@ public class Map {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
+        /*có thể cần đổi tên hàm*/
+
+        bombs.removeIf(bomb -> bomb.getIsRemoved());
+
+        items.removeIf(item -> item.getIsRemoved());
     }
 }

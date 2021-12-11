@@ -6,13 +6,14 @@ import javafx.scene.input.KeyEvent;
 
 
 public class Keyboard {
-    public boolean up, down, left, right, space;
+    public boolean up, down, left, right, space, detonate;
     public Keyboard() {
         this.up = false;
         this.down = false;
         this.left = false;
         this.right = false;
         this.space = false;
+        this.detonate = false;
     }
 
     public void update() {
@@ -36,6 +37,9 @@ public class Keyboard {
             case SPACE:
                 space = true;
                 break;
+            case B:
+                detonate = true;
+                break;
         }
     }
 
@@ -56,6 +60,9 @@ public class Keyboard {
                 break;
             case SPACE:
                 space = false;
+                break;
+            case B:
+                detonate = false;
                 break;
         }
     }
