@@ -7,6 +7,7 @@ import uet.oop.bomberman.entities.Bomb.Explosion;
 import uet.oop.bomberman.entities.Character.Character;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.sound.Sound;
 
 public abstract class Enemy extends Character {
     protected int score;
@@ -17,7 +18,6 @@ public abstract class Enemy extends Character {
         super(xUnit, yUnit, img);
         direction = 1;
         bounds = new Rectangle2D(2, 2, Sprite.SCALED_SIZE - 4, Sprite.SCALED_SIZE - 4);
-
     }
 
     @Override
@@ -36,11 +36,13 @@ public abstract class Enemy extends Character {
         if (direction == 0 || direction == 2) {
             if (canMove(0, ya)) {
                 can_move = true;
+                x = autoCorrectPosition(x);
                 y += ya;
             }
         } else if (direction == 1 || direction == 3) {
             if(canMove(xa, 0)) {
                 can_move = true;
+                y = autoCorrectPosition(y);
                 x += xa;
             }
         }
@@ -92,6 +94,7 @@ public abstract class Enemy extends Character {
     @Override
     public void kill() {
         if(!alive) return;
+        new Sound().playMusicEffect(Sound.ENEMY_DIE);
         moving = false;
         alive = false;
         _animate = 0;

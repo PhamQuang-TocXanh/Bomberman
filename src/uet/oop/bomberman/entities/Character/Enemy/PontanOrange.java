@@ -11,6 +11,7 @@ public class PontanOrange extends Enemy {
         velocity = 4;
         sprite = Sprite.pontan_orange_left1;
         autoBot = new AutoBot1();
+        bombPass = true;
     }
 
     @Override

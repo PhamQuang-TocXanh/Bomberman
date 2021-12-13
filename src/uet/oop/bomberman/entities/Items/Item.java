@@ -8,6 +8,7 @@ import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Tiles.Brick;
 import uet.oop.bomberman.entities.Tiles.Grass;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.sound.Sound;
 
 public abstract class Item extends Entity {
 
@@ -41,6 +42,7 @@ public abstract class Item extends Entity {
 
         if (e instanceof Bomber) {
             if (!isRemoved) {
+                new Sound().playMusicEffect(Sound.ITEM);
                 effect();
                 remove();
             }

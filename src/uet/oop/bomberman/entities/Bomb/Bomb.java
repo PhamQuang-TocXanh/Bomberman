@@ -11,6 +11,7 @@ import uet.oop.bomberman.entities.Items.Item;
 import uet.oop.bomberman.entities.Tiles.Brick;
 import uet.oop.bomberman.entities.Tiles.Wall;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.sound.Sound;
 
 import java.util.Iterator;
 import java.util.List;
@@ -73,6 +74,7 @@ public class Bomb extends AnimatedEntity {
     }
 
     private void explode() {
+        new Sound().playMusicEffect(Sound.BOMB_BANG);
         isExploded = true;
         int length = gameMap.bomber.getBombLength();
         explosions = new Explosion[5][length];

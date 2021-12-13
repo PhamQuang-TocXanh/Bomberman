@@ -163,8 +163,7 @@ public abstract class Character extends AnimatedEntity {
     public int autoCorrectPosition(int a) {
         int temp = a;
         for (int i = a - Sprite.SCALED_SIZE / 4; i <= a + Sprite.SCALED_SIZE /4; i++) {
-            if (i == a / Sprite.SCALED_SIZE * Sprite.SCALED_SIZE
-                    || i == a / Sprite.SCALED_SIZE * Sprite.SCALED_SIZE + Sprite.SCALED_SIZE) {
+            if (i % Sprite.SCALED_SIZE == 0) {
                 temp = i; break;
             }
         }

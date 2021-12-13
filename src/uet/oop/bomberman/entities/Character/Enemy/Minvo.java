@@ -10,7 +10,7 @@ public class Minvo extends Enemy {
         score = 800;
         velocity = 4;
         sprite = Sprite.minvo_right1;
-        autoBot = new AutoBot2();
+        autoBot = new AutoBot3();
     }
 
     @Override

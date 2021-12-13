@@ -9,6 +9,7 @@ import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Tiles.Grass;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.input.Keyboard;
+import uet.oop.bomberman.sound.Sound;
 
 import java.util.List;
 
@@ -110,6 +111,8 @@ public class Bomber extends Character {
 
         alive = false;
         _animate = 0;
+        life--;
+        new Sound().playMusicEffect(Sound.BOMBER_DIE);
 
         System.out.println("killed");
     }

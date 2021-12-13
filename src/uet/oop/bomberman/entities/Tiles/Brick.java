@@ -40,15 +40,7 @@ public class Brick extends AnimatedEntity {
 
     @Override
     public boolean collide(Entity e) {
-        if (e instanceof Character && ((Character)e).isWallPass()) {
-            return true;
-        }
-        /*
-        if (e instanceof Character) {
-            ((Character) e).kill();
-        }
-        */
-        return false;
+        return e instanceof Character && ((Character) e).isWallPass();
     }
 
     public void destroy() {

@@ -26,7 +26,7 @@ public class Map {
 
     public int WIDTH;
     public int HEIGHT;
-    public static int level = 6;
+    public static int level = 5;
     public Entity[][] tiles;
     public ArrayList<Character> characters = new ArrayList<>();
     public ArrayList<Bomb> bombs = new ArrayList<>();

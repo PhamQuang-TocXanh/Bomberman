@@ -23,10 +23,6 @@ public class Kondoria extends Enemy {
 //        return can_move;
 //    }
 
-    public boolean collide(Entity e) {
-        return true;
-    }
-
     @Override
     protected void chooseSprite() {
         if (moving) {

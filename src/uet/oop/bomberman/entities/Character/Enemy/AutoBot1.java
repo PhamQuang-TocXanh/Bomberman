@@ -5,7 +5,7 @@ import uet.oop.bomberman.graphics.Sprite;
 import java.util.Random;
 
 public class AutoBot1 implements AutoBot{
-    private Random random;
+    private final Random random;
     protected long changeDirectionTime;
 
     public AutoBot1() {
