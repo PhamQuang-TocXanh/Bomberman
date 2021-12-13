@@ -40,7 +40,6 @@ public class Bomber extends Character {
         animate();
         if (!alive) {
             afterKill();
-            return;
         } else {
             if (invincible) {
                 invincibleTimeCheck();
@@ -134,6 +133,7 @@ public class Bomber extends Character {
             usedBombs++;
             Bomb b = new Bomb(this.getXTile(), this.getYTile(), Sprite.bomb.getFxImage());
             gameMap.bombs.add(b);
+            new Sound().playMusicEffect(Sound.NEW_BOMB);
         }
         else timeBeforeNextBomb--;
     }
@@ -188,56 +188,73 @@ public class Bomber extends Character {
     public void setInvincible() {
         invincible = true;
     }
-/*
-    @Override
-    protected boolean canMove(int xMove, int yMove) {
-        int xTile;
-        int yTile;
-        if (xMove > 0) {//move right
-            xTile = (int) (x + xMove + bounds.getWidth())/Sprite.SCALED_SIZE;
-            for (int i = 0; i < 2; i++) {
-                yTile = (int) (y + bounds.getMinY() + bounds.getHeight() * i)/Sprite.SCALED_SIZE;
-                Entity e = gameMap.getTileAt(xTile, yTile);
-                if (!e.collide(this)) {
-                    System.out.println(yTile + "-" + xTile);
-                    return false;
-                }
-            }
-        } else if (xMove < 0) { //move left
-            xTile = (int) (x + xMove)/Sprite.SCALED_SIZE;
-            for (int i = 0; i < 2; i++) {
-                yTile = (int) (y + bounds.getMinY() + bounds.getHeight() * i)/Sprite.SCALED_SIZE;
-                Entity e = gameMap.getTileAt(xTile, yTile);
-                if (!e.collide(this)) {
-                    System.out.println(yTile + "-" + xTile);
-                    return false;
-                }
-            }
-        }
 
-        if (yMove < 0) { // move up
-            yTile = (int) (y + bounds.getMinY() + yMove)/Sprite.SCALED_SIZE;
-            for (int i = 0; i < 2; i++) {
-                xTile = (int) (x + bounds.getWidth() * i)/Sprite.SCALED_SIZE;
-                Entity e = gameMap.getTileAt(xTile, yTile);
-                if (!e.collide(this)) {
-                    System.out.println(yTile + "-" + xTile);
-                    return false;
+    public void setUsedBombs(int usedBombs) {
+        this.usedBombs = usedBombs;
+    }
+
+    public void setTimeBeforeNextBomb(int timeBeforeNextBomb) {
+        this.timeBeforeNextBomb = timeBeforeNextBomb;
+    }
+
+    public void setTimeBeforeNextDetonate(int timeBeforeNextDetonate) {
+        this.timeBeforeNextDetonate = timeBeforeNextDetonate;
+    }
+
+    public void setCanDetonate(boolean canDetonate) {
+        this.canDetonate = canDetonate;
+    }
+
+    /*
+        @Override
+        protected boolean canMove(int xMove, int yMove) {
+            int xTile;
+            int yTile;
+            if (xMove > 0) {//move right
+                xTile = (int) (x + xMove + bounds.getWidth())/Sprite.SCALED_SIZE;
+                for (int i = 0; i < 2; i++) {
+                    yTile = (int) (y + bounds.getMinY() + bounds.getHeight() * i)/Sprite.SCALED_SIZE;
+                    Entity e = gameMap.getTileAt(xTile, yTile);
+                    if (!e.collide(this)) {
+                        System.out.println(yTile + "-" + xTile);
+                        return false;
+                    }
+                }
+            } else if (xMove < 0) { //move left
+                xTile = (int) (x + xMove)/Sprite.SCALED_SIZE;
+                for (int i = 0; i < 2; i++) {
+                    yTile = (int) (y + bounds.getMinY() + bounds.getHeight() * i)/Sprite.SCALED_SIZE;
+                    Entity e = gameMap.getTileAt(xTile, yTile);
+                    if (!e.collide(this)) {
+                        System.out.println(yTile + "-" + xTile);
+                        return false;
+                    }
                 }
             }
-        } else if (yMove > 0) { //move down
-            yTile = (int) (y + bounds.getMinY() + yMove + bounds.getHeight())/Sprite.SCALED_SIZE;
-            for (int i = 0; i < 2; i++) {
-                xTile = (int) (x + bounds.getWidth() * i)/Sprite.SCALED_SIZE;
-                Entity e = gameMap.getTileAt(xTile, yTile);
-                if (!e.collide(this)) {
-                    System.out.println(yTile + "-" + xTile);
-                    return false;
+
+            if (yMove < 0) { // move up
+                yTile = (int) (y + bounds.getMinY() + yMove)/Sprite.SCALED_SIZE;
+                for (int i = 0; i < 2; i++) {
+                    xTile = (int) (x + bounds.getWidth() * i)/Sprite.SCALED_SIZE;
+                    Entity e = gameMap.getTileAt(xTile, yTile);
+                    if (!e.collide(this)) {
+                        System.out.println(yTile + "-" + xTile);
+                        return false;
+                    }
+                }
+            } else if (yMove > 0) { //move down
+                yTile = (int) (y + bounds.getMinY() + yMove + bounds.getHeight())/Sprite.SCALED_SIZE;
+                for (int i = 0; i < 2; i++) {
+                    xTile = (int) (x + bounds.getWidth() * i)/Sprite.SCALED_SIZE;
+                    Entity e = gameMap.getTileAt(xTile, yTile);
+                    if (!e.collide(this)) {
+                        System.out.println(yTile + "-" + xTile);
+                        return false;
+                    }
                 }
             }
-        }
-        return true;
-    }*/
+            return true;
+        }*/
     public Keyboard getKeyboard() {
         return input;
     }

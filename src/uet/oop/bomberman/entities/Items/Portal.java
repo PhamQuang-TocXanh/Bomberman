@@ -1,6 +1,8 @@
 package uet.oop.bomberman.entities.Items;
 
 import javafx.scene.image.Image;
+import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.Map;
 import uet.oop.bomberman.entities.Entity;
 
 public class Portal extends Item {
@@ -10,7 +12,9 @@ public class Portal extends Item {
 
     @Override
     public void effect() {
-        System.out.println("next level");
+        if (Map.goNextLevel) {
+            Map.nextLevel = true;
+        }
     }
 
     @Override

@@ -12,9 +12,16 @@ public class CharacterFactory {
     public static void getCharacter(int i, int j, char c) {
         switch (c) {
             case 'p':
-                if (Map.bomber == null) {
+                if (Map.bomber == null || Map.level == 1) {
                     Map.bomber = new Bomber(i, j, Sprite.player_right.getFxImage());
                     gameMap.characters.add(Map.bomber);
+                } else {
+                    Map.bomber.setX(i * Sprite.SCALED_SIZE);
+                    Map.bomber.setY(j * Sprite.SCALED_SIZE);
+                    Map.bomber.setTimeBeforeNextBomb(0);
+                    Map.bomber.setTimeBeforeNextDetonate(0);
+                    Map.bomber.setUsedBombs(0);
+                    Map.bomber.direction = -1;
                 }
                 break;
             case '1':

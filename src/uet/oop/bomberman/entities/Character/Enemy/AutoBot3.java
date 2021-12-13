@@ -49,8 +49,8 @@ public class AutoBot3 implements AutoBot {
                 }
             }
 
-            String myPath = "";
-            position.add(new Point(thisE.getXTile(), thisE.getYTile()));
+            String myPath = "hihi";
+            position.add(new Point(thisE.getXTile(), thisE.getYTile()));////
             path.add("S");
             check[thisE.getYTile()][thisE.getXTile()] = true;
             while (!position.isEmpty()) {
@@ -83,7 +83,8 @@ public class AutoBot3 implements AutoBot {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
-        return random.nextInt(4);//neu khong co duong di
+        if (!thisE.can_move) return random.nextInt(4);
+        return curDirection;//neu khong co duong di
     }
 
     private boolean validMove(int x, int y) {

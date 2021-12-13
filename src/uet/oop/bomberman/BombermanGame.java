@@ -24,16 +24,16 @@ public class BombermanGame extends Application {
     public static int WIDTH = 20;
     public static int HEIGHT = 15;
     public static int SCORE = 0;
-    public static int pause = -1;// >=0 le thi dung man hinh
-    public static char[][] map;
+    public static int chooseScene = -1;// >=0 le thi dung man hinh
 
     public static Stage stage;
     private GraphicsContext gc;
     private Canvas canvas;
     public static List<Entity> entities = new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
+    private Scene scene;
 
-    public static Bomber bomber;
+    private Bomber bomber;
     public static Map gameMap = Map.getMap();
 
     public static void main(String[] args) {
@@ -43,23 +43,6 @@ public class BombermanGame extends Application {
     @Override
     public void start(Stage mainStage) {
         stage = mainStage;
-        /*
-        try {
-            levelLoader = new LevelLoader();
-            if (levelLoader.loadLevel(5)) {
-                WIDTH = levelLoader.getWIDTH();
-                HEIGHT = levelLoader.getHEIGHT();
-            } else {
-                if (levelLoader.loadLevel(1)) {// level mac dinh neu khong load dc map
-                    WIDTH = levelLoader.getWIDTH();
-                    HEIGHT = levelLoader.getHEIGHT();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
-        }
-        */
         gameMap.createMap();
         WIDTH= gameMap.WIDTH;
         HEIGHT = gameMap.HEIGHT;
@@ -72,7 +55,7 @@ public class BombermanGame extends Application {
         root.getChildren().add(NotificationBoard.scoreBoard());
         root.getChildren().add(canvas);
         // Tao scene
-        Scene scene = new Scene(root);// main scene
+        scene = new Scene(root);// main scene
         Scene pauseScene = NotificationBoard.pauseScene();
 
         // Them scene vao stage
@@ -88,8 +71,9 @@ public class BombermanGame extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                if (pause >= 0) {
-                    if (pause % 2 == 0) {
+                update();
+                if (chooseScene >= 0) {
+                    if (chooseScene % 2 == 0) {
                         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
                         gameMap.updateMap();
                         gameMap.renderMap(gc);
@@ -104,18 +88,15 @@ public class BombermanGame extends Application {
             }
         };
         timer.start();
-        /* QUang
-        createMap();
-        */
 
+        scene.setOnKeyReleased(keyEvent -> bomber.getKeyboard().keyReleased(keyEvent));
         scene.setOnKeyPressed(keyEvent -> {
             bomber.getKeyboard().keyPressed(keyEvent);
             if (keyEvent.getCode() == KeyCode.P) {
                 new Sound().playMusicEffect(Sound.CLICKY);
-                pause++;
+                chooseScene++;
             }
         });
-        scene.setOnKeyReleased(keyEvent -> bomber.getKeyboard().keyReleased(keyEvent));
     }
 
     public void logout(Stage stage) {
@@ -125,6 +106,42 @@ public class BombermanGame extends Application {
 
         if (alert.showAndWait().get() == ButtonType.OK) {
             stage.close();
+        }
+    }
+
+    public void update() {
+        if (Map.nextLevel) {
+            chooseScene = -1;
+            Map.level++;
+            if (Map.level > 5) {
+                stage.setScene(NotificationBoard.win_loseScene(true));
+            } else {
+                stage.setScene(NotificationBoard.levelScene());
+            }
+            gameMap.createMap();
+            WIDTH = gameMap.WIDTH;
+            HEIGHT = gameMap.HEIGHT;
+            bomber = Map.bomber;
+            bomber.getKeyboard().reset();
+            Map.nextLevel = false;
+
+            canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
+            gc = canvas.getGraphicsContext2D();
+            VBox root = new VBox();
+            root.getChildren().add(NotificationBoard.scoreBoard());
+            root.getChildren().add(canvas);
+            scene = new Scene(root);
+            stage.setResizable(false);
+            stage.show();
+            stage.setTitle("Bomberman 25");
+            scene.setOnKeyReleased(keyEvent -> bomber.getKeyboard().keyReleased(keyEvent));
+            scene.setOnKeyPressed(keyEvent -> {
+                bomber.getKeyboard().keyPressed(keyEvent);
+                if (keyEvent.getCode() == KeyCode.P) {
+                    new Sound().playMusicEffect(Sound.CLICKY);
+                    chooseScene++;
+                }
+            });
         }
     }
 

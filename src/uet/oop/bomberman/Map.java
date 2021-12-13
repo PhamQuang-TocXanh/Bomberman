@@ -27,6 +27,8 @@ public class Map {
     public int WIDTH;
     public int HEIGHT;
     public static int level = 5;
+    public static boolean goNextLevel;
+    public static boolean nextLevel;
     public Entity[][] tiles;
     public ArrayList<Character> characters = new ArrayList<>();
     public ArrayList<Bomb> bombs = new ArrayList<>();
@@ -39,8 +41,10 @@ public class Map {
     }
 
     private void resetMap() {
+        goNextLevel = false;
+        nextLevel = false;
         tiles = new Entity[HEIGHT][WIDTH];
-        characters.clear();
+        characters.clear(); if (bomber != null && level != 1) characters.add(bomber);
         bombs.clear();
         items.clear();
     }
@@ -73,6 +77,7 @@ public class Map {
         characters.forEach(Character::update);
 
         removeDead();
+        if (characters.size() == 1) goNextLevel = true;
 
         for(Bomb b : bombs) {
             b.update();

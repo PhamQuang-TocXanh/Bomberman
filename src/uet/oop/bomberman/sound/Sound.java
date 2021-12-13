@@ -16,6 +16,8 @@ public class Sound {
     public static String WIN = "sound/win.wav";
     public static String BACKGROUND = "sound/background.wav";
     public static String CLICKY = "sound/clicky.wav";
+    public static String NEW_BOMB = "sound/newbomb.wav";
+    public static String GAME_OVER = "sound/gameover.wav";
 
     public void playMusicEffect(String music) {
         try {

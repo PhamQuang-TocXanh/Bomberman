@@ -28,7 +28,7 @@ public class NotificationBoard {
     public static void updateScoreBoard() {
         SCORE.setText("SCORE: " + BombermanGame.SCORE);
         LEVEL.setText("LEVEL: " + Map.level);
-        LIFE.setText("LIFE: " + BombermanGame.bomber.getLife());
+        LIFE.setText("LIFE: " + Map.bomber.getLife());
     }
 
     public static HBox scoreBoard() {
@@ -54,7 +54,7 @@ public class NotificationBoard {
                         " -fx-background-color: rgb(10, 2, 1)");
         button.setOnAction(actionEvent -> {
             new Sound().playMusicEffect(Sound.CLICKY);
-            BombermanGame.pause++;
+            BombermanGame.chooseScene++;
         });
         VBox root = new VBox(t1, button);
         root.setAlignment(Pos.CENTER);  root.setSpacing(60);
@@ -65,7 +65,7 @@ public class NotificationBoard {
         scene.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.P) {
                 new Sound().playMusicEffect(Sound.CLICKY);
-                BombermanGame.pause++;
+                BombermanGame.chooseScene++;
             }
         });
         return scene;
@@ -82,7 +82,7 @@ public class NotificationBoard {
                         "-fx-background-color: rgb(96,186,251)");
         play.setOnAction(actionEvent -> {
             new Sound().playMusicEffect(Sound.CLICKY);
-            BombermanGame.pause = 0;
+            BombermanGame.chooseScene = 0;
         });
         play.setOnMouseEntered(mouseEvent -> play.setStyle("-fx-text-fill: #ffffff;" +
                         " -fx-background-radius: 50;" +
@@ -102,23 +102,28 @@ public class NotificationBoard {
         scene.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER) {
                 new Sound().playMusicEffect(Sound.CLICKY);
-                BombermanGame.pause = 0;
+                BombermanGame.chooseScene = 0;
             }
         });
         return scene;
     }
 
-    public static Scene winScene() {
-        new Sound().playMusicEffect(Sound.WIN);
+    public static Scene win_loseScene(boolean win) {
+        Map.level = 1;
+        Sound.stopBackgroundMusic();
+        if (win) new Sound().playMusicEffect(Sound.WIN);
+        else new Sound().playMusicEffect(Sound.GAME_OVER);
         DropShadow ds = new DropShadow();
         ds.setOffsetY(4.0f);
         ds.setColor(Color.rgb(72,71,70));
-        Text win = new Text("YOU WIN!!!");
-        win.setFont(Font.loadFont(Objects.requireNonNull(c.getResource("fonts/CollegiateBlackFLF.ttf")).toString(), 70));
-        win.setFill(Color.rgb(192,233,252)); win.setEffect(ds);
+        Text text;
+        if (win) text = new Text("YOU WIN!!!");
+        else text = new Text(" YOU LOSE ");
+        text.setFont(Font.loadFont(Objects.requireNonNull(c.getResource("fonts/CollegiateBlackFLF.ttf")).toString(), 70));
+        text.setFill(Color.rgb(237,250,246)); text.setEffect(ds);
         Text score = new Text("Your score: " + BombermanGame.SCORE);
         score.setFont(Font.loadFont(Objects.requireNonNull(c.getResource("fonts/CollegiateBlackFLF.ttf")).toString(), 33));
-        score.setFill(Color.rgb(192,233,252)); score.setEffect(ds);
+        score.setFill(Color.rgb(237,250,246)); score.setEffect(ds);
 
         Button playAgain = new Button("Play again?");
         playAgain.setPrefHeight(50); playAgain.setPrefWidth(350);
@@ -128,9 +133,7 @@ public class NotificationBoard {
                             " -fx-background-color: rgb(96,186,251)");
         playAgain.setOnAction(actionEvent -> {
             new Sound().playMusicEffect(Sound.CLICKY);
-            BombermanGame.pause = 0;
-            Map.level = 1;
-            //load level 1
+            BombermanGame.chooseScene = 0;
         });
         playAgain.setOnMouseEntered(mouseEvent -> playAgain.setStyle("-fx-text-fill: #ffffff;" +
                 " -fx-background-radius: 50;" +
@@ -139,20 +142,19 @@ public class NotificationBoard {
                 " -fx-background-radius: 50;" +
                 "-fx-background-color: rgb(96,186,251)"));
         Label empty = new Label(""); empty.setPrefHeight(100);
-        VBox root = new VBox(empty ,win, score, playAgain);
+        VBox root = new VBox(empty ,text, score, playAgain);
         root.setAlignment(Pos.CENTER);  root.setSpacing(40);
         root.setBackground(new Background(new BackgroundFill(Color.rgb(6, 2, 1),null,null)));
-        root.setStyle("-fx-background-image: url('img.png');" +
-                        "-fx-background-repeat: no-repeat;" +
-                        "-fx-background-position: top left;" +
-                        "-fx-background-size: 100% 100%");
+        if (win) root.setStyle("-fx-background-image: url('img.png');" +
+                "-fx-background-repeat: no-repeat;" +
+                "-fx-background-position: top left;" +
+                "-fx-background-size: 100% 100%");
         root.setPrefSize(Sprite.SCALED_SIZE * BombermanGame.WIDTH, Sprite.SCALED_SIZE * BombermanGame.HEIGHT + 50);
         Scene scene = new Scene(root);
         scene.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER) {
                 new Sound().playMusicEffect(Sound.CLICKY);
-                BombermanGame.pause = 0;
-                Map.level = 1;
+                BombermanGame.chooseScene = 0;
             }
         });
         return scene;
@@ -176,7 +178,7 @@ public class NotificationBoard {
             if (keyEvent.getCode() == KeyCode.ENTER || keyEvent.getCode() == KeyCode.P || keyEvent.getCode() == KeyCode.SPACE ||
                     keyEvent.getCode() == KeyCode.A || keyEvent.getCode() == KeyCode.D || keyEvent.getCode() == KeyCode.S) {
                 new Sound().playMusicEffect(Sound.CLICKY);
-                BombermanGame.pause++;
+                BombermanGame.chooseScene = 0;
             }
         });
         return scene;
