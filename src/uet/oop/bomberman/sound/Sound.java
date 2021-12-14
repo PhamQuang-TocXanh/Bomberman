@@ -1,5 +1,7 @@
 package uet.oop.bomberman.sound;
 
+import uet.oop.bomberman.BombermanGame;
+
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
@@ -43,7 +45,12 @@ public class Sound {
     }
 
     public static void stopBackgroundMusic() {
-        if (clip != null) clip.stop();
+        try {
+            if (clip != null) clip.stop();
+            if (BombermanGame.chooseScene == -1) clip = loadMusic(BACKGROUND);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static Clip loadMusic(String music) throws UnsupportedAudioFileException, IOException, LineUnavailableException {

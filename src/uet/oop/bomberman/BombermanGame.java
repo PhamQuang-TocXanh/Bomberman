@@ -110,12 +110,27 @@ public class BombermanGame extends Application {
     }
 
     public void update() {
+        if (bomber.timeAfter <= 0 && bomber.getLife() <= 0) {
+            chooseScene = -1;
+            Map.level = 1;
+            stage.setScene(NotificationBoard.win_loseScene(false));
+            gameMap.createMap();
+            WIDTH = gameMap.WIDTH;
+            HEIGHT = gameMap.HEIGHT;
+            bomber = Map.bomber;
+            bomber.getKeyboard().reset();
+            Map.nextLevel = false;
+            setGameScene();
+            return;
+        }
         if (Map.nextLevel) {
             chooseScene = -1;
             Map.level++;
             if (Map.level > 5) {
+                Map.level = 1;
                 stage.setScene(NotificationBoard.win_loseScene(true));
             } else {
+                bomber.setLife(bomber.getLife() + 1);
                 stage.setScene(NotificationBoard.levelScene());
             }
             gameMap.createMap();
@@ -124,25 +139,28 @@ public class BombermanGame extends Application {
             bomber = Map.bomber;
             bomber.getKeyboard().reset();
             Map.nextLevel = false;
-
-            canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
-            gc = canvas.getGraphicsContext2D();
-            VBox root = new VBox();
-            root.getChildren().add(NotificationBoard.scoreBoard());
-            root.getChildren().add(canvas);
-            scene = new Scene(root);
-            stage.setResizable(false);
-            stage.show();
-            stage.setTitle("Bomberman 25");
-            scene.setOnKeyReleased(keyEvent -> bomber.getKeyboard().keyReleased(keyEvent));
-            scene.setOnKeyPressed(keyEvent -> {
-                bomber.getKeyboard().keyPressed(keyEvent);
-                if (keyEvent.getCode() == KeyCode.P) {
-                    new Sound().playMusicEffect(Sound.CLICKY);
-                    chooseScene++;
-                }
-            });
+            setGameScene();
         }
+    }
+
+    private void setGameScene() {
+        canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
+        gc = canvas.getGraphicsContext2D();
+        VBox root = new VBox();
+        root.getChildren().add(NotificationBoard.scoreBoard());
+        root.getChildren().add(canvas);
+        scene = new Scene(root);
+        stage.setResizable(false);
+        stage.show();
+        stage.setTitle("Bomberman 25");
+        scene.setOnKeyReleased(keyEvent -> bomber.getKeyboard().keyReleased(keyEvent));
+        scene.setOnKeyPressed(keyEvent -> {
+            bomber.getKeyboard().keyPressed(keyEvent);
+            if (keyEvent.getCode() == KeyCode.P) {
+                new Sound().playMusicEffect(Sound.CLICKY);
+                chooseScene++;
+            }
+        });
     }
 
     public GraphicsContext getGc() {

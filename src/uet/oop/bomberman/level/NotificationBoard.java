@@ -109,7 +109,6 @@ public class NotificationBoard {
     }
 
     public static Scene win_loseScene(boolean win) {
-        Map.level = 1;
         Sound.stopBackgroundMusic();
         if (win) new Sound().playMusicEffect(Sound.WIN);
         else new Sound().playMusicEffect(Sound.GAME_OVER);
@@ -161,6 +160,7 @@ public class NotificationBoard {
     }
 
     public static Scene levelScene() {
+        Sound.stopBackgroundMusic();
         Text text = new Text("Level " + Map.level); text.setWrappingWidth(200);
         text.setFont(Font.loadFont(Objects.requireNonNull(c.getResource("fonts/CollegiateInsideFLF.ttf")).toString(), 50));
         text.setFill(Color.WHITESMOKE);
