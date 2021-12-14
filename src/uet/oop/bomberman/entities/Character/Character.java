@@ -178,4 +178,16 @@ public abstract class Character extends AnimatedEntity {
     public int getYTile() {
         return (y + Sprite.SCALED_SIZE/2) / Sprite.SCALED_SIZE;
     }
+
+    public int getMessagePosX() {
+        return (int) (x + bounds.getMinX() + bounds.getWidth()/2);
+    }
+
+    public int getMessagePosY() {
+        return (int) (y + bounds.getMinY() + bounds.getHeight()/2 + 3);
+    }
+
+    public Rectangle2D getBounds() {
+        return new Rectangle2D(x, y, bounds.getWidth(), bounds.getHeight());
+    }
 }

@@ -1,6 +1,7 @@
 package uet.oop.bomberman;
 
 import javafx.scene.canvas.GraphicsContext;
+import uet.oop.bomberman.Message.Message;
 import uet.oop.bomberman.entities.Bomb.Bomb;
 import uet.oop.bomberman.entities.Bomb.Explosion;
 import uet.oop.bomberman.entities.Character.Bomber;
@@ -19,6 +20,7 @@ import uet.oop.bomberman.level.LevelLoader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class Map {
     private static Map gameMap = new Map();
@@ -26,7 +28,7 @@ public class Map {
 
     public int WIDTH;
     public int HEIGHT;
-    public static int level = 5;
+    public static int level = 1;
     public static boolean goNextLevel;
     public static boolean nextLevel;
     public Entity[][] tiles;
@@ -34,6 +36,7 @@ public class Map {
     public ArrayList<Bomb> bombs = new ArrayList<>();
     //public LinkedList<Bomb> bombs = new LinkedList<>();
     public ArrayList<Item> items = new ArrayList<>();
+    public ArrayList<Message> messages = new ArrayList<>();
     public static Bomber bomber;
     private LevelLoader levelLoader = new LevelLoader();
     public static Map getMap() {
@@ -47,6 +50,7 @@ public class Map {
         characters.clear(); if (bomber != null && level != 1) characters.add(bomber);
         bombs.clear();
         items.clear();
+        messages.clear();
     }
 
     public void createMap() {
@@ -76,6 +80,8 @@ public class Map {
 
         characters.forEach(Character::update);
 
+        messages.forEach(Message::update);
+
         removeDead();
         if (characters.size() == 1) goNextLevel = true;
 
@@ -94,7 +100,9 @@ public class Map {
         bombs.forEach(b -> b.render(gc));
         characters.forEach(ch -> ch.render(gc));
         items.forEach(item -> item.render(gc));
+        messages.forEach(message -> message.render(gc));
     }
+
 
     public Entity getTileAt(int x, int y) {
         for (Item item : items) {
@@ -152,6 +160,7 @@ public class Map {
                     if (!(characters.get(i) instanceof Enemy)) continue;
                     Enemy e = (Enemy) characters.get(i);
                     if (e.timeAfter <= 0) {
+                        messages.add(new Message("+" + e.getScore(), e, 100, false));
                         characters.remove(e);
                         BombermanGame.SCORE += e.getScore();
                         System.out.println(BombermanGame.SCORE);
@@ -168,5 +177,7 @@ public class Map {
         bombs.removeIf(bomb -> bomb.getIsRemoved());
 
         items.removeIf(item -> item.getIsRemoved());
+
+        messages.removeIf(message -> message.getIsRemoved());
     }
 }

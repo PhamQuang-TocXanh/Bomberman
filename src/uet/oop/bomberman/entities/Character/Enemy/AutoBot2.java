@@ -21,7 +21,7 @@ public class AutoBot2 implements AutoBot {
     public int calculateDirection(int curDirection, Enemy myEnemy) {
         thisE = myEnemy;
         if (bomber == null) return random.nextInt(4);
-        if (distance() < Sprite.SCALED_SIZE * 5) {
+        if (distance() < Sprite.SCALED_SIZE * 5 && bomber.isAlive()) {
             int vertical = random.nextInt(2);
             if (vertical == 1) {
                 int v = rowDirection();

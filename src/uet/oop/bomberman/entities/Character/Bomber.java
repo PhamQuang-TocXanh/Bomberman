@@ -3,6 +3,7 @@ package uet.oop.bomberman.entities.Character;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import uet.oop.bomberman.Message.Message;
 import uet.oop.bomberman.entities.Bomb.Bomb;
 import uet.oop.bomberman.entities.Bomb.Explosion;
 import uet.oop.bomberman.entities.Entity;
@@ -17,9 +18,9 @@ public class Bomber extends Character {
     private int life;
     protected Keyboard input;
     private List<Bomb> bombs;
-    private int maxBombs = 3;
+    private int maxBombs = 1;
     private int usedBombs = 0;
-    private int bombLength = 2;
+    private int bombLength = 1;
     private int timeBeforeNextBomb = 0;
     private int timeBeforeNextDetonate = 0;
     private boolean canDetonate = false;
@@ -33,6 +34,7 @@ public class Bomber extends Character {
         bounds = new Rectangle2D(0, 4, 24, Sprite.SCALED_SIZE - 6);
         life = 1;
         bombs = gameMap.bombs;
+        timeAfter = 50;
     }
 
     @Override
@@ -46,9 +48,12 @@ public class Bomber extends Character {
             }
             calculateMove();
 
+            checkCollideEnemy();
+
             placeBomb();
 
             detonateBomb();
+
         }
     }
 
@@ -112,8 +117,7 @@ public class Bomber extends Character {
         _animate = 0;
         life--;
         new Sound().playMusicEffect(Sound.BOMBER_DIE);
-
-        System.out.println("killed");
+        gameMap.messages.add(new Message("-1 LIFE", this, 100, false));
     }
 
     @Override
@@ -121,11 +125,24 @@ public class Bomber extends Character {
         if (timeAfter > 0) --timeAfter;
         else {
             alive = true;
-            timeAfter = 40;
+            timeAfter = 50;
+            x = 32;
+            y = 32;
         }
     }
 
-    public void placeBomb() {
+    public void checkCollideEnemy() {
+        for (Character character : gameMap.characters) {
+            if (character == this) continue;
+            //if (character.getXTile() == this.getXTile() && character.getYTile() == this.getYTile()) {
+            if (this.getBounds().intersects(character.getBounds())) {
+                this.kill();
+                return;
+            }
+        }
+    }
+
+    public  void placeBomb() {
         if(input.space && usedBombs < maxBombs && timeBeforeNextBomb < 0) {
             if (!(gameMap.getTileAt(this.getXTile(), this.getYTile()) instanceof Grass)) return;
             if (gameMap.getBombAt(this.getXTile(), this.getYTile()) != null) return;
@@ -150,7 +167,6 @@ public class Bomber extends Character {
         if (invincibleTime > 0) {
             invincibleTime --;
         } else {
-            System.out.println("end invincible");
             invincible = false;
             invincibleTime = 400;
         }
@@ -159,34 +175,42 @@ public class Bomber extends Character {
     /* Power up */
     public void increaseMaxBombs() {
         ++maxBombs;
+        gameMap.messages.add(new Message("+1 Bomb", this, 100, false));
     }
 
     public void increaseBombLength() {
         ++bombLength;
+        gameMap.messages.add(new Message("+ Bomb Length", this, 100, false));
     }
 
     public void increaseSpeed() {
         ++velocity;
+        gameMap.messages.add(new Message("+ Speed", this, 100, false));
     }
 
     public void canPassWall() {
         wallPass = true;
+        gameMap.messages.add(new Message("Wall Pass", this, 100, false));
     }
 
     public void canPassBomb() {
         bombPass = true;
+        gameMap.messages.add(new Message("Bomb Pass", this, 100, false));
     }
 
     public void canPassFlame() {
         flamePass = true;
+        gameMap.messages.add(new Message("Flame Pass", this, 100, false));
     }
 
     public void setCanDetonate() {
         canDetonate = true;
+        gameMap.messages.add(new Message("Now you can press B to detonate bomb", this, 100, false));
     }
 
     public void setInvincible() {
         invincible = true;
+        gameMap.messages.add(new Message("INVINCIBLE", this, invincibleTime, true));
     }
 
     public void setUsedBombs(int usedBombs) {
@@ -282,7 +306,7 @@ public class Bomber extends Character {
     @Override
     protected void chooseSprite() {
         if (!alive) {
-            sprite = Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, _animate, 40);
+            sprite = Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, _animate, 50);
             return;
         }
 
