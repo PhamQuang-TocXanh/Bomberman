@@ -7,7 +7,7 @@ import uet.oop.bomberman.graphics.Sprite;
 import java.util.Random;
 
 public class AutoBot2 implements AutoBot {
-    private final Bomber bomber = Map.bomber;
+    private Bomber bomber = Map.bomber;
     private final Random random;
     protected long changeDirectionTime;
     private Enemy thisE = null;
@@ -19,6 +19,7 @@ public class AutoBot2 implements AutoBot {
 
     @Override
     public int calculateDirection(int curDirection, Enemy myEnemy) {
+        bomber = Map.bomber;
         thisE = myEnemy;
         if (bomber == null) return random.nextInt(4);
         if (distance() < Sprite.SCALED_SIZE * 5 && bomber.isAlive()) {

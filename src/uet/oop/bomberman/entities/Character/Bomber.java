@@ -28,7 +28,7 @@ public class Bomber extends Character {
     private int invincibleTime = 400;
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
-        velocity = 2;
+        velocity = 4;
         sprite = Sprite.player_right;
         input = new Keyboard();
         bounds = new Rectangle2D(0, 4, 24, Sprite.SCALED_SIZE - 6);
