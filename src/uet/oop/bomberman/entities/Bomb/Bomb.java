@@ -37,7 +37,6 @@ public class Bomb extends AnimatedEntity {
         if (timeBeforeExplode > 0) --timeBeforeExplode;
         else if(!isExploded){
             explode();
-            System.out.println("exploded");
         } else {
             afterExploded();
         }
@@ -158,8 +157,6 @@ public class Bomb extends AnimatedEntity {
     private void afterExploded() {
         if (timeBeforeRemove > 0) --timeBeforeRemove;
         else {
-            //remove
-            System.out.println("remove");
             remove();
         }
     }

@@ -126,6 +126,8 @@ public class Bomber extends Character {
         else {
             alive = true;
             timeAfter = 50;
+            invincibleTime = 100;
+            setInvincible();
             x = 32;
             y = 32;
         }
@@ -189,21 +191,25 @@ public class Bomber extends Character {
     }
 
     public void canPassWall() {
+        if (wallPass) return;
         wallPass = true;
         gameMap.messages.add(new Message("Wall Pass", this, 100, false));
     }
 
     public void canPassBomb() {
+        if (bombPass) return;
         bombPass = true;
         gameMap.messages.add(new Message("Bomb Pass", this, 100, false));
     }
 
     public void canPassFlame() {
+        if (flamePass) return;
         flamePass = true;
         gameMap.messages.add(new Message("Flame Pass", this, 100, false));
     }
 
     public void setCanDetonate() {
+        if (canDetonate) return;
         canDetonate = true;
         gameMap.messages.add(new Message("Now you can press B to detonate bomb", this, 100, false));
     }
@@ -211,6 +217,11 @@ public class Bomber extends Character {
     public void setInvincible() {
         invincible = true;
         gameMap.messages.add(new Message("INVINCIBLE", this, invincibleTime, true));
+    }
+
+    public void increaseLife() {
+        life++;
+        gameMap.messages.add(new Message("+1 LIFE", this, 100, false));
     }
 
     public void setUsedBombs(int usedBombs) {

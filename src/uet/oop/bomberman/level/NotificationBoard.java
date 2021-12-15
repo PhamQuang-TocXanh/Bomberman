@@ -72,11 +72,11 @@ public class NotificationBoard {
     }
 
     public static Scene startScene() {
-        Button play = new Button("Play");
+        Button play = new Button("PLAY");
         play.setPrefHeight(50); play.setPrefWidth(300);
         play.setFont(Font.loadFont(Objects.requireNonNull(c.getResource("fonts/CollegiateBlackFLF.ttf")).toString(), 40));
         play.setLayoutX((double) (Sprite.SCALED_SIZE * BombermanGame.WIDTH) / 2 - 150);
-        play.setLayoutY((double) (Sprite.SCALED_SIZE * BombermanGame.HEIGHT + 50) / 2 + 100);
+        play.setLayoutY((double) (Sprite.SCALED_SIZE * BombermanGame.HEIGHT + 50) / 2);
         play.setStyle("-fx-text-fill: #ffffff;" +
                         " -fx-background-radius: 50;" +
                         "-fx-background-color: rgb(96,186,251)");
@@ -91,7 +91,26 @@ public class NotificationBoard {
                         " -fx-background-radius: 50;" +
                         "-fx-background-color: rgb(96,186,251)"));
 
-        AnchorPane root = new AnchorPane(play);
+        Button help = new Button("HELP");
+        help.setPrefHeight(50); help.setPrefWidth(300);
+        help.setFont(Font.loadFont(Objects.requireNonNull(c.getResource("fonts/CollegiateBlackFLF.ttf")).toString(), 40));
+        help.setLayoutX((double) (Sprite.SCALED_SIZE * BombermanGame.WIDTH) / 2 - 150);
+        help.setLayoutY((double) (Sprite.SCALED_SIZE * BombermanGame.HEIGHT + 50) / 2 + 100);
+        help.setStyle("-fx-text-fill: #ffffff;" +
+                " -fx-background-radius: 50;" +
+                "-fx-background-color: rgb(96,186,251)");
+        help.setOnAction(actionEvent -> {
+            System.out.println(":(");
+        });
+        help.setOnMouseEntered(mouseEvent -> help.setStyle("-fx-text-fill: #ffffff;" +
+                " -fx-background-radius: 50;" +
+                "-fx-background-color: rgb(18,128,255)"));
+        help.setOnMouseExited(mouseEvent -> help.setStyle("-fx-text-fill: #ffffff;" +
+                " -fx-background-radius: 50;" +
+                "-fx-background-color: rgb(96,186,251)"));
+
+
+        AnchorPane root = new AnchorPane(play, help);
         root.setBackground(new Background(new BackgroundFill(Color.rgb(10, 2, 1),null,null)));
         root.setStyle("-fx-background-image: url('img.png');" +
                         "-fx-background-repeat: no-repeat;" +
