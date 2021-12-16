@@ -18,7 +18,7 @@ public abstract class Enemy extends Character {
     public Enemy(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
         direction = 1;
-        bounds = new Rectangle2D(2, 2, Sprite.SCALED_SIZE - 4, Sprite.SCALED_SIZE - 4);
+        bounds = new Rectangle2D( 0, 0, Sprite.SCALED_SIZE - 1, Sprite.SCALED_SIZE - 1);
     }
 
     @Override

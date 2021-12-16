@@ -5,16 +5,22 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.Map;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.sound.Sound;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.Objects;
 
 public class NotificationBoard {
@@ -100,7 +106,18 @@ public class NotificationBoard {
                 " -fx-background-radius: 50;" +
                 "-fx-background-color: rgb(96,186,251)");
         help.setOnAction(actionEvent -> {
-            System.out.println(":(");
+            Stage s = new Stage();
+            AnchorPane a = new AnchorPane();
+            a.setStyle("-fx-background-image: url('helpMenu.png');" +
+                    "-fx-background-repeat: no-repeat;" +
+                    "-fx-background-position: top left;" +
+                    "-fx-background-size: 100% 100%");
+            Scene scene = new Scene(a);
+            s.setScene(scene);
+            s.setWidth(700); s.setHeight(500);
+            s.setResizable(false);
+            s.initModality(Modality.APPLICATION_MODAL);
+            s.showAndWait();
         });
         help.setOnMouseEntered(mouseEvent -> help.setStyle("-fx-text-fill: #ffffff;" +
                 " -fx-background-radius: 50;" +

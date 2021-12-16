@@ -12,6 +12,7 @@ import java.util.*;
 public class AutoBot3 implements AutoBot {
     private final Map map = Map.getMap();
     private final Random random;
+    private long changeDirectionTime;
     private final Entity[][] entities = map.tiles;
     private Queue<Point> position = new LinkedList<>();
     private Queue<String> path = new LinkedList<>();
@@ -28,10 +29,18 @@ public class AutoBot3 implements AutoBot {
     public int calculateDirection(int curDirection, Enemy myEnemy) {
         Bomber bomber = Map.bomber;
         if (bomber == null) return random.nextInt(4);
-        System.out.println(myEnemy.getDirection());
+        System.out.println(curDirection + " " + preDi);
         try {
-            if (myEnemy.can_move) preDi = curDirection;
-            else {
+            if (myEnemy.can_move) {
+                preDi = curDirection;
+                changeDirectionTime = System.currentTimeMillis();
+            }
+            else if (bomber.timeAfter == 50) {
+                //sau khi bomber song laji neu enemy ko di chuyen dc
+                if (System.currentTimeMillis() - changeDirectionTime >= 1000) {
+                    changeDirectionTime = System.currentTimeMillis();
+                    return random.nextInt(4);
+                }
                 return preDi;
             }
             position.clear();

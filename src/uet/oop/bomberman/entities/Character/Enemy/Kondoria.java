@@ -12,7 +12,7 @@ public class Kondoria extends Enemy {
         score = 1000;
         velocity = 1;
         sprite = Sprite.kondoria_left2;
-        autoBot = new AutoBot1();
+        autoBot = new AutoBot3();
         wallPass = true;
     }
 

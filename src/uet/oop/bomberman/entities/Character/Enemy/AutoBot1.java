@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class AutoBot1 implements AutoBot{
     private final Random random;
-    protected long changeDirectionTime;
+    private long changeDirectionTime;
 
     public AutoBot1() {
         random = new Random();
