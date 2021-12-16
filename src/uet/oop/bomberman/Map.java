@@ -28,7 +28,7 @@ public class Map {
 
     public int WIDTH;
     public int HEIGHT;
-    public static int level = 5;
+    public static int level = 1;
     public static boolean goNextLevel;
     public static boolean nextLevel;
     public Entity[][] tiles;

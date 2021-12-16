@@ -35,15 +35,15 @@ public abstract class Enemy extends Character {
     protected void move(int xa, int ya) {
         can_move = false;
         if (direction == 0 || direction == 2) {
+            x = autoCorrectPosition(x);
             if (canMove(0, ya)) {
                 can_move = true;
-                x = autoCorrectPosition(x);
                 y += ya;
             }
         } else if (direction == 1 || direction == 3) {
+            y = autoCorrectPosition(y);
             if(canMove(xa, 0)) {
                 can_move = true;
-                y = autoCorrectPosition(y);
                 x += xa;
             }
         }

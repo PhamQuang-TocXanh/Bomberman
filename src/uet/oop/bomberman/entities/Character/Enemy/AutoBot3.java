@@ -29,7 +29,6 @@ public class AutoBot3 implements AutoBot {
     public int calculateDirection(int curDirection, Enemy myEnemy) {
         Bomber bomber = Map.bomber;
         if (bomber == null) return random.nextInt(4);
-        System.out.println(curDirection + " " + preDi);
         try {
             if (myEnemy.can_move) {
                 preDi = curDirection;
@@ -37,7 +36,7 @@ public class AutoBot3 implements AutoBot {
             }
             else if (bomber.timeAfter == 50) {
                 //sau khi bomber song laji neu enemy ko di chuyen dc
-                if (System.currentTimeMillis() - changeDirectionTime >= 1000) {
+                if (System.currentTimeMillis() - changeDirectionTime >= 500) {
                     changeDirectionTime = System.currentTimeMillis();
                     return random.nextInt(4);
                 }
