@@ -63,10 +63,10 @@ public class BombermanGame extends Application {
         stage.setScene(NotificationBoard.startScene());
         stage.show();
         stage.setTitle("Bomberman 25");
-//        stage.setOnCloseRequest(e -> {
-//            e.consume();
-//            logout(stage);
-//        });
+        stage.setOnCloseRequest(e -> {
+            e.consume();
+            logout(stage);
+        });
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -110,23 +110,23 @@ public class BombermanGame extends Application {
     }
 
     public void update() {
-//        if (bomber.timeAfter <= 0 && bomber.getLife() <= 0) {
-//            chooseScene = -1;
-//            Map.level = 1;
-//            stage.setScene(NotificationBoard.win_loseScene(false));
-//            gameMap.createMap();
-//            WIDTH = gameMap.WIDTH;
-//            HEIGHT = gameMap.HEIGHT;
-//            bomber = Map.bomber;
-//            bomber.getKeyboard().reset();
-//            Map.nextLevel = false;
-//            setGameScene();
-//            return;
-//        }
+        if (bomber.timeAfter <= 0 && bomber.getLife() <= 0) {
+            chooseScene = -1;
+            Map.level = 1;
+            stage.setScene(NotificationBoard.win_loseScene(false));
+            gameMap.createMap();
+            WIDTH = gameMap.WIDTH;
+            HEIGHT = gameMap.HEIGHT;
+            bomber = Map.bomber;
+            bomber.getKeyboard().reset();
+            Map.nextLevel = false;
+            setGameScene();
+            return;
+        }
         if (Map.nextLevel) {
             chooseScene = -1;
             Map.level++;
-            if (Map.level > 5) {
+            if (Map.level > 6) {
                 Map.level = 1;
                 stage.setScene(NotificationBoard.win_loseScene(true));
             } else {

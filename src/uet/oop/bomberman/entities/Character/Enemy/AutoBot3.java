@@ -35,7 +35,7 @@ public class AutoBot3 implements AutoBot {
                 changeDirectionTime = System.currentTimeMillis();
             }
             else if (bomber.timeAfter == 50) {
-                //sau khi bomber song laji neu enemy ko di chuyen dc
+                //sau khi bomber song lai neu enemy ko di chuyen dc
                 if (System.currentTimeMillis() - changeDirectionTime >= 500) {
                     changeDirectionTime = System.currentTimeMillis();
                     return random.nextInt(4);

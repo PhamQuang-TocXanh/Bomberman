@@ -23,13 +23,13 @@ public class AutoBot2 implements AutoBot {
         thisE = myEnemy;
         if (bomber == null) return random.nextInt(4);
         if (distance() < Sprite.SCALED_SIZE * 5 && bomber.isAlive()) {
-            int vertical = random.nextInt(2);
-            if (vertical == 1) {
-                int v = rowDirection();
-                return v != -1 ? v : colDirection();
+            int direction = random.nextInt(2);
+            if (direction == 1) {
+                int v = colDirection();
+                return v != -1 ? v : rowDirection();
             } else {
-                int h = colDirection();
-                return h != -1 ? h : rowDirection();
+                int h = rowDirection();
+                return h != -1 ? h : colDirection();
             }
         }
         else if (!myEnemy.can_move || System.currentTimeMillis() - changeDirectionTime >= 3000) {
@@ -39,7 +39,7 @@ public class AutoBot2 implements AutoBot {
         return curDirection;
     }
 
-    protected int colDirection() {
+    protected int rowDirection() {
         int pX = bomber.getX() / Sprite.SCALED_SIZE * Sprite.SCALED_SIZE;
         for (int i = bomber.getX() - Sprite.SCALED_SIZE / 4; i <= bomber.getX() + Sprite.SCALED_SIZE / 4; i++) {
             if (i % Sprite.SCALED_SIZE==0) pX = i;
@@ -50,7 +50,7 @@ public class AutoBot2 implements AutoBot {
         return - 1;
     }
 
-    protected int rowDirection() {
+    protected int colDirection() {
         int pY = bomber.getY() / Sprite.SCALED_SIZE * Sprite.SCALED_SIZE;
         for (int i = bomber.getY() - Sprite.SCALED_SIZE / 4; i <= bomber.getY() + Sprite.SCALED_SIZE / 4; i++) {
             if (i % Sprite.SCALED_SIZE==0) pY = i;

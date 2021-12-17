@@ -169,6 +169,7 @@ public class NotificationBoard {
         playAgain.setOnAction(actionEvent -> {
             new Sound().playMusicEffect(Sound.CLICKY);
             BombermanGame.chooseScene = 0;
+            BombermanGame.SCORE = 0;
         });
         playAgain.setOnMouseEntered(mouseEvent -> playAgain.setStyle("-fx-text-fill: #ffffff;" +
                 " -fx-background-radius: 50;" +
