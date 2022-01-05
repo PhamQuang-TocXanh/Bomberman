@@ -1,24 +1,24 @@
 package uet.oop.bomberman.entities.Character.Enemy;
 
+import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import uet.oop.bomberman.entities.Bomb;
+import uet.oop.bomberman.Message.Message;
+import uet.oop.bomberman.entities.Bomb.Explosion;
 import uet.oop.bomberman.entities.Character.Character;
 import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.Items.BombItem;
-import uet.oop.bomberman.entities.Items.FlameItem;
-import uet.oop.bomberman.entities.Items.SpeedItem;
-import uet.oop.bomberman.entities.Tiles.Brick;
-import uet.oop.bomberman.entities.Tiles.Wall;
+import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.sound.Sound;
 
 public abstract class Enemy extends Character {
-    public int score;
+    protected int score;
     protected AutoBot autoBot;
     public boolean can_move = true;
 
     public Enemy(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
         direction = 1;
+        bounds = new Rectangle2D( 0, 0, Sprite.SCALED_SIZE - 1, Sprite.SCALED_SIZE - 1);
     }
 
     @Override
@@ -32,18 +32,45 @@ public abstract class Enemy extends Character {
         move(xa * velocity, ya * velocity);
     }
 
+    protected void move(int xa, int ya) {
+        can_move = false;
+        if (direction == 0 || direction == 2) {
+            x = autoCorrectPosition(x);
+            if (canMove(0, ya)) {
+                can_move = true;
+                y += ya;
+            }
+        } else if (direction == 1 || direction == 3) {
+            y = autoCorrectPosition(y);
+            if(canMove(xa, 0)) {
+                can_move = true;
+                x += xa;
+            }
+        }
+    }
+
     @Override
-    public boolean canMove(int xa, int ya) {
-        Entity e = this.collision(xa, ya);
-        if (e instanceof Wall) {
+    public boolean collide(Entity e) {
+        if (e instanceof Explosion) {
             this.kill();
             return false;
         }
-        can_move = e != null && !(e instanceof Brick) && !(e instanceof Wall) && !(e instanceof Bomb)
-                && !(e instanceof BombItem) && !(e instanceof FlameItem) && !(e instanceof SpeedItem);
-        return can_move;
+        return true;
     }
 
+    /*
+        @Override
+        public boolean canMove(int xa, int ya) {
+            Entity e = this.collision(xa, ya);
+            if (e instanceof Wall) {
+                this.kill();
+                return false;
+            }
+            can_move = e != null && !(e instanceof Brick) && !(e instanceof Wall) && !(e instanceof Bomb)
+                    && !(e instanceof BombItem) && !(e instanceof FlameItem) && !(e instanceof SpeedItem);
+            return can_move;
+        }
+    */
     @Override
     public void render(GraphicsContext gc) {
         try {
@@ -68,6 +95,7 @@ public abstract class Enemy extends Character {
     @Override
     public void kill() {
         if(!alive) return;
+        new Sound().playMusicEffect(Sound.ENEMY_DIE);
         moving = false;
         alive = false;
         _animate = 0;
@@ -76,7 +104,6 @@ public abstract class Enemy extends Character {
     @Override
     protected void afterKill() {
         if (timeAfter > 0) timeAfter--;
-        System.out.println(timeAfter);
     }
 
     public int getScore() {

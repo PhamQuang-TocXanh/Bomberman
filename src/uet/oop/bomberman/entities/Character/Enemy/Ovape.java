@@ -1,6 +1,7 @@
 package uet.oop.bomberman.entities.Character.Enemy;
 
 import javafx.scene.image.Image;
+import uet.oop.bomberman.entities.Character.Character;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Tiles.Wall;
 import uet.oop.bomberman.graphics.Sprite;
@@ -13,14 +14,15 @@ public class Ovape extends Enemy {
         velocity = 2;
         sprite = Sprite.ovape_left1;
         autoBot = new AutoBot2();
+        wallPass = true;
     }
 
-    @Override
-    public boolean canMove(int xa, int ya) {
-        Entity e = this.collision(xa, ya);
-        can_move = e != null && !(e instanceof Wall);
-        return can_move;
-    }
+//    @Override
+//    public boolean canMove(int xa, int ya) {
+//        Entity e = this.collision(xa, ya);
+//        can_move = e != null && !(e instanceof Wall);
+//        return can_move;
+//    }
 
     @Override
     protected void chooseSprite() {

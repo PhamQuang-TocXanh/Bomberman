@@ -6,7 +6,7 @@
 # # # # # #*# # #*#*# # # # #*#
 #f         x **  *  *   1     #
 # # # # # # # # # #*# #*# # # #
-#*  *      *  *      *        #
+#*  *      *  *               #
 # # # # #*# # # #*#*# # # # # #
 #*    **  *       *           #
 # #*# # # # # # #*# # # # # # #
@@ -42,5 +42,8 @@ Items:
 b - Bomb Item
 f - Flame Item
 s - Speed Item
-
+d - Detonator Item
+j - Wallpass Item
+k - Bombpass Item
+l - Flamepass Item
 Kí tự khác các kí tự trên - Grass

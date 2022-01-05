@@ -1,15 +1,19 @@
 package uet.oop.bomberman.input;
 
 
+
 import javafx.scene.input.KeyEvent;
 
+
 public class Keyboard {
-    public boolean up, down, left, right;
+    public boolean up, down, left, right, space, detonate;
     public Keyboard() {
         this.up = false;
         this.down = false;
         this.left = false;
         this.right = false;
+        this.space = false;
+        this.detonate = false;
     }
 
     public void update() {
@@ -17,7 +21,6 @@ public class Keyboard {
     }
 
     public void keyPressed(KeyEvent e) {
-
         switch (e.getCode()) {
             case W: case UP:
                 up = true;
@@ -29,12 +32,19 @@ public class Keyboard {
                 left = true;
                 break;
             case D: case RIGHT:
-                right= true;
+                right = true;
+                break;
+            case SPACE:
+                space = true;
+                break;
+            case B:
+                detonate = true;
                 break;
         }
     }
 
     public void keyReleased(KeyEvent e) {
+
         switch (e.getCode()) {
             case W: case UP:
                 up = false;
@@ -46,8 +56,24 @@ public class Keyboard {
                 left = false;
                 break;
             case D: case RIGHT:
-                right= false;
+                right = false;
+                break;
+            case SPACE:
+                space = false;
+                break;
+            case B:
+                detonate = false;
                 break;
         }
     }
+
+    public void reset() {
+        up = false;
+        down = false;
+        left = false;
+        right = false;
+        space = false;
+        detonate = false;
+    }
+
 }

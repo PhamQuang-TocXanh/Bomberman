@@ -12,15 +12,16 @@ public class PontanRed extends Enemy {
         score = 8000;
         velocity = 4;
         sprite = Sprite.pontan_red_left1;
-        autoBot = new AutoBot1();
+        autoBot = new AutoBot3();
+        wallPass = true;
     }
 
-    @Override
-    public boolean canMove(int xa, int ya) {
-        Entity e = this.collision(xa, ya);
-        can_move = e != null && !(e instanceof Wall);
-        return can_move;
-    }
+//    @Override
+//    public boolean canMove(int xa, int ya) {
+//        Entity e = this.collision(xa, ya);
+//        can_move = e != null && !(e instanceof Wall);
+//        return can_move;
+//    }
 
     @Override
     protected void chooseSprite() {

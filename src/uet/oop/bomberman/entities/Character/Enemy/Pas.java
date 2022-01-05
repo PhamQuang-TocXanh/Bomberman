@@ -10,7 +10,7 @@ public class Pas extends Enemy {
         score = 400;
         velocity = 4;
         sprite = Sprite.pas_right1;
-        autoBot = new AutoBot1();
+        autoBot = new AutoBot3();
     }
 
     @Override

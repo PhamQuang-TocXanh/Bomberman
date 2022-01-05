@@ -5,9 +5,12 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import uet.oop.bomberman.Map;
 import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class Entity {
+    protected Map gameMap = Map.getMap();
+
     //Tọa độ X tính từ góc trái trên trong Canvas
     protected int x;
 
@@ -23,16 +26,35 @@ public abstract class Entity {
         this.img = img;
     }
 
+    public Entity() {
+    }
+
     public void render(GraphicsContext gc) {
         gc.drawImage(img, x, y);
     }
     public abstract void update();
-
+    public abstract boolean collide(Entity e);
     public int getX() {
         return x;
     }
 
     public int getY() {
         return y;
+    }
+
+    public Image getImg() {
+        return img;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public void setImg(Image img) {
+        this.img = img;
     }
 }
